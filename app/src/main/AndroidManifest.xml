@@ -22,7 +22,7 @@
             android:name=".join"
             android:exported="false" />
         <activity
-            android:name=".logIn"
+            android:name=".start"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

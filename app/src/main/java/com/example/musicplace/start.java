@@ -11,7 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class logIn extends AppCompatActivity {
+public class start extends AppCompatActivity {
 // 가장 처음에 시작되는 로그인 페이지
 
     private Button join, email, kakao, login;
@@ -21,7 +21,7 @@ public class logIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_start);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -33,7 +33,7 @@ public class logIn extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(logIn.this, join.class);
+                Intent intent = new Intent(start.this, join.class);
                 startActivity(intent);
             }
         });
