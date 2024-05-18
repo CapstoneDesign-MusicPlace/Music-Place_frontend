@@ -9,4 +9,101 @@
     android:background="@color/background"
     tools:context=".join">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="left"
+        android:layout_marginBottom="80dp">
+
+        <ImageButton
+            android:id="@+id/back_login"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:background="@color/bannerBackground"
+            app:srcCompat="@drawable/join_arrow" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:background="@color/bannerBackground"
+            android:text="회원가입"
+            android:textColor="@color/text"
+            android:textSize="30dp" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/Id"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Id : "
+        android:textColor="@color/text"
+        android:layout_gravity="center"/>
+
+    <CheckBox
+        android:id="@+id/IdCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_gravity="right"
+        android:text="아이디 중복확인"
+        android:textColor="@color/text" />
+
+    <EditText
+        android:id="@+id/Pw"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Pw : "
+        android:textColor="@color/text"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/Repw"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Repw : "
+        android:textColor="@color/text"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/Email"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Email : "
+        android:textColor="@color/text"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/Nickname"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Nickname :"
+        android:textColor="@color/text"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"/>
+
+    <ImageButton
+        android:id="@+id/finish"
+        android:layout_width="137dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/join_finish_button"
+        android:layout_gravity="center"/>
+
 </LinearLayout>
