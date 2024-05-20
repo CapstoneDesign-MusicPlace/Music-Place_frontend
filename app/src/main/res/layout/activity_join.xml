@@ -38,67 +38,73 @@
 
 
     <EditText
-        android:id="@+id/Id"
+        android:id="@+id/id"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Id : "
-        android:textColor="@color/text"
+        android:hint="Id : "
+        android:textColorHint = "@color/text"
+        android:textColor = "@color/text"
         android:layout_gravity="center"/>
 
     <Button
-        android:id="@+id/IdCheck"
+        android:id="@+id/idCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:background="#00ff0000"
         android:text="아이디 중복확인"
-        android:textColor="@color/text" />
+        android:textColor="@color/text"
+        />
 
     <EditText
-        android:id="@+id/Pw"
+        android:id="@+id/pw"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Pw : "
-        android:textColor="@color/text"
+        android:hint="Pw : "
+        android:textColorHint = "@color/text"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text"/>
 
     <EditText
-        android:id="@+id/Repw"
+        android:id="@+id/repw"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Repw : "
-        android:textColor="@color/text"
+        android:hint="Repw : "
+        android:textColorHint="@color/text"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text"/>
 
     <EditText
-        android:id="@+id/Email"
+        android:id="@+id/email"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Email : "
-        android:textColor="@color/text"
+        android:hint="Email : "
+        android:textColorHint="@color/text"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text"/>
 
     <EditText
-        android:id="@+id/Nickname"
+        android:id="@+id/nickName"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Nickname :"
-        android:textColor="@color/text"
+        android:hint="Nickname :"
+        android:textColorHint="@color/text"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text"/>
 
     <EditText
         android:id="@+id/name"
@@ -108,10 +114,12 @@
         android:layout_marginBottom="10dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name :"
-        android:textColor="@color/text" />
+        android:hint="Name :"
+        android:textColorHint="@color/text"
+        android:textColor="@color/text"/>
 
     <RadioGroup
+        android:id="@+id/radio_group"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
