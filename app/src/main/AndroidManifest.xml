@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".findId"
+            android:exported="false" />
+        <activity
+            android:name=".findPw"
+            android:exported="false" />
+        <activity
             android:name=".login"
             android:exported="false" />
         <activity
