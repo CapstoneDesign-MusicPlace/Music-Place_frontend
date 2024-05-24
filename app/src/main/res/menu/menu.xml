@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        app:showAsAction="always"
+        android:icon="@drawable/menu_home"
+        android:enabled="true"
+        android:title=" " />
+
+    <item
+        android:id="@+id/search"
+        app:showAsAction="always"
+        android:icon="@drawable/menu_search"
+        android:enabled="true"
+        android:checked="true"
+        android:title=" " />
+
+    <item
+        android:id="@+id/headset"
+        app:showAsAction="always"
+        android:icon="@drawable/menu_headset"
+        android:enabled="true"
+        android:checked="true"
+        android:title=" " />
+
+    <item
+        android:id="@+id/person"
+        app:showAsAction="always"
+        android:icon="@drawable/menu_person"
+        android:enabled="true"
+        android:title=" " />
+
+    <item
+        android:id="@+id/add"
+        app:showAsAction="always"
+        android:icon="@drawable/menu_add"
+        android:enabled="true"
+        android:title=" " />
+
+</menu>

@@ -5,4 +5,6 @@
     <color name="background">#21244D</color>
     <color name="text">#A387BE</color>
     <color name="bannerBackground">#D9D9D9</color>
+    <color name="menuBackground">#38394E</color>
+    <color name="icon">#73548A</color>
 </resources>

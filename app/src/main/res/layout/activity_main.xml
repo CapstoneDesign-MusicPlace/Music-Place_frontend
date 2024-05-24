@@ -5,6 +5,22 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main">
+    tools:context=".main"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/menuBackground"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@color/icon"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu"
+        />
 
 </LinearLayout>
+
+

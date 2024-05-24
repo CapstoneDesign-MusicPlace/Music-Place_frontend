@@ -6,12 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,17 +17,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.dto.Gender;
 import com.example.musicplace.dto.SignInSaveDto;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Objects;
+import com.example.musicplace.retrofit.UserApiInterface;
+import com.example.musicplace.retrofit.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class join extends AppCompatActivity {
     // 회원가입을 진행하는 페이지
@@ -38,7 +31,7 @@ public class join extends AppCompatActivity {
     private Button idCheck;
     private EditText id, pw, repw, email, nickName, name;
     private boolean checkIdState = false;
-    private ApiInterface api;
+    private UserApiInterface api;
     private Gender gender;
     private RadioGroup radioGroup;
 
@@ -47,7 +40,7 @@ public class join extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        api = RetrofitClient.getRetrofit().create(ApiInterface.class);
+        api = RetrofitClient.getRetrofit().create(UserApiInterface.class);
 
         setContentView(R.layout.activity_join);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -77,7 +70,6 @@ public class join extends AppCompatActivity {
                 }
             }
         };
-
         radioGroup.setOnCheckedChangeListener(radioGroupButtonChangeListener);
 
 
@@ -106,16 +98,7 @@ public class join extends AppCompatActivity {
                 String userName = String.valueOf(name.getText());
 
                 if(passWord.equals(rePassWord) && checkIdState) {
-
-                    HashMap<String, Object> input = new HashMap<>();
-                    input.put("member_id",userId);
-                    input.put("pw",passWord);
-                    input.put("name",userName);
-                    input.put("gender",gender);
-                    input.put("email",userEmail);
-                    input.put("nickname",userNickName);
-
-                    Call<SignInSaveDto> call = api.saveMember(input);
+                    Call<SignInSaveDto> call = api.saveMember(new SignInSaveDto(userId, passWord, userName, userEmail, userNickName, gender));
                     call.enqueue(new Callback<SignInSaveDto>() {
                         @Override
                         public void onResponse(Call<SignInSaveDto> call, Response<SignInSaveDto> response) {
