@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class login extends AppCompatActivity {
 
-    private ImageButton back_login;
+    private ImageButton back_login, start;
     private Button forgetId, forgetPw;
 
     @Override
@@ -32,7 +32,7 @@ public class login extends AppCompatActivity {
         back_login.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) { // 초기 화면으로 이동
                 Intent intent = new Intent(login.this, start.class);
                 startActivity(intent);
             }
@@ -43,7 +43,7 @@ public class login extends AppCompatActivity {
         forgetId.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {// 아이디 찾기 이동
                 Intent intent = new Intent(login.this, findId.class);
                 startActivity(intent);
             }
@@ -54,8 +54,19 @@ public class login extends AppCompatActivity {
         forgetPw.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {// 비밀번호 찾기 이동
                 Intent intent = new Intent(login.this, findPw.class);
+                startActivity(intent);
+            }
+        });
+
+
+        start = (ImageButton) findViewById(R.id.finish);
+        start.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) { // 로그인 성공시 동작
+                Intent intent = new Intent(login.this, SearchMusic.class);
                 startActivity(intent);
             }
         });

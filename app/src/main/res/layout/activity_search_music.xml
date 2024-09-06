@@ -46,13 +46,13 @@
             android:id="@+id/imageView3"
             android:layout_width="20dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="130dp"
+            android:layout_marginLeft="100dp"
             app:srcCompat="@drawable/search2" />
 
         <TextView
             android:id="@+id/textViewSearch"
-            android:layout_width="368dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:text="음 악 을  검 색 해 주 세 요"
@@ -62,8 +62,21 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="540dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@color/menuBackground"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@color/icon"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu" />
 
 
 </LinearLayout>
