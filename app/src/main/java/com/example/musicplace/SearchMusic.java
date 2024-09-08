@@ -42,7 +42,7 @@ public class SearchMusic extends AppCompatActivity {
         /* initiate recyclerview */
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false));
+
 
         /* adapt data */
         ArrayList<FriendItem> mfriendItems = new ArrayList<>();
@@ -54,6 +54,8 @@ public class SearchMusic extends AppCompatActivity {
 
         }
         mRecyclerAdapter.setFriendList(mfriendItems);
+
+
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_menu);
