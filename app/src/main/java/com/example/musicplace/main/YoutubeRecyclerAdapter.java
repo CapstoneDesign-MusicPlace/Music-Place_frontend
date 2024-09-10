@@ -1,4 +1,4 @@
-package com.example.musicplace;
+package com.example.musicplace.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,28 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.bumptech.glide.Glide;
-import com.example.musicplace.dto.youtub.YoutubeItem;
-
-import java.util.ArrayList;
-
-// YoutubeRecyclerAdapter.java
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplace.R;
 import com.example.musicplace.dto.youtub.YoutubeItem;
 
 import java.util.ArrayList;
+
+// YoutubeRecyclerAdapter.java
+
 
 public class YoutubeRecyclerAdapter extends RecyclerView.Adapter<YoutubeRecyclerAdapter.ViewHolder> {
 

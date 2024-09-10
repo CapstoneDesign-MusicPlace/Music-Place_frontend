@@ -1,22 +1,20 @@
-package com.example.musicplace;
+package com.example.musicplace.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.musicplace.R;
 
 import com.example.musicplace.dto.youtub.YoutubeItem;
 import com.example.musicplace.dto.youtub.VidioImage;
@@ -102,19 +100,15 @@ public class SearchMusic extends AppCompatActivity {
             }
         });
 
-        /*// 리사이클러뷰 아이템 클릭 이벤트 처리
-        mRecyclerAdapter.setOnItemClickListener(position -> {
-            // 클릭된 동영상 정보 가져오기
-            YoutubeVidioDto selectedVideo = videoDtoList.get(position);
-
-            // 프래그먼트로 데이터 전달
-            VideoPlayerFragment fragment = VideoPlayerFragment.newInstance((ArrayList<YoutubeVidioDto>) videoDtoList, position);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            *//*transaction.replace(R.id.fragment_video_player, fragment); // 프래그먼트를 교체할 레이아웃 ID*//*
-            transaction.addToBackStack(null);
-            transaction.commit();
-        });*/
-
+        // RecyclerView 아이템 클릭 리스너
+        mRecyclerAdapter.setOnItemClickListener((position) -> {
+            // 클릭된 아이템의 YoutubeItem 데이터 가져오기
+            Intent intent = new Intent(getApplicationContext(),musicPlayer.class);
+            intent.putExtra("VidioTitle", videoDtoList.get(position).getVidioTitle());
+            intent.putExtra("VidioId", videoDtoList.get(position).getVidioId());
+            System.out.println(position);
+            startActivity(intent);
+        });
 
 
         // 하단 네비게이션바

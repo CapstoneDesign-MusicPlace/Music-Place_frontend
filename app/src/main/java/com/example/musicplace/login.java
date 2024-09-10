@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.musicplace.main.SearchMusic;
+
 public class login extends AppCompatActivity {
 
     private ImageButton back_login, start;
@@ -66,6 +68,7 @@ public class login extends AppCompatActivity {
 
             @Override
             public void onClick(View view) { // 로그인 성공시 동작
+
                 Intent intent = new Intent(login.this, SearchMusic.class);
                 startActivity(intent);
             }
