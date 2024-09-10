@@ -54,7 +54,7 @@ public class join extends AppCompatActivity {
         repw = (EditText) findViewById(R.id.repw);
         email = (EditText) findViewById(R.id.email);
         nickName = (EditText) findViewById(R.id.nickName);
-        name = (EditText) findViewById(R.id.name);
+        name = (EditText) findViewById(R.id.vidioTitle);
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 

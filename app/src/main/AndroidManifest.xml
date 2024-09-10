@@ -28,12 +28,6 @@
             android:name=".login"
             android:exported="false" />
         <activity
-            android:name=".musicTaste"
-            android:exported="false" />
-        <activity
-            android:name=".main"
-            android:exported="false" />
-        <activity
             android:name=".join"
             android:exported="false" />
         <activity

@@ -62,25 +62,36 @@
             android:textColor = "@color/white"
             android:textSize="15dp"/>
 
+        <Button
+            android:id="@+id/SearchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색" />
+
     </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:layout_width="380dp"
+        android:layout_height="520dp"
         android:background="@color/recycleViewBackground"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
         android:background="@color/menuBackground"
-        app:itemIconSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconSize="30dp"
         app:itemIconTint="@color/icon"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu" />
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_menu" />
+
 
 
 </LinearLayout>

@@ -3,6 +3,10 @@ package com.example.musicplace;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -10,93 +14,140 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.musicplace.dto.FriendItem;
+import com.example.musicplace.dto.youtub.YoutubeItem;
+import com.example.musicplace.dto.youtub.VidioImage;
+import com.example.musicplace.dto.youtub.YoutubeVidioDto;
+import com.example.musicplace.retrofit.RetrofitClient;
+import com.example.musicplace.retrofit.UserApiInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchMusic extends AppCompatActivity {
-    // 로그인 이후 가장 처음으로 나오는 페이지(실질적으로 main 페이지가 여기이다)
+
     private BottomNavigationView bottomNavigationView;
-    private Intent intent;
+    private EditText keywordEditText;
+    private Button searchButton;
+    private UserApiInterface api;
+    private YoutubeRecyclerAdapter mRecyclerAdapter;
+    private List<YoutubeVidioDto> videoDtoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search_music);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        /* initiate adapter */
-        MyRecyclerAdapter mRecyclerAdapter = new MyRecyclerAdapter();
+        // Retrofit 클라이언트 생성 및 API 인터페이스 연결
+        api = RetrofitClient.getRetrofit().create(UserApiInterface.class);
 
-        /* initiate recyclerview */
-        mRecyclerView.setAdapter(mRecyclerAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // 리사이클러뷰 초기화
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        mRecyclerAdapter = new YoutubeRecyclerAdapter(this, new ArrayList<>());
+        recyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // 음악 검색 버튼
+        keywordEditText = findViewById(R.id.Search);
+        searchButton = findViewById(R.id.SearchButton);
 
-        /* adapt data */
-        ArrayList<FriendItem> mfriendItems = new ArrayList<>();
-        for(int i=1;i<=10;i++){
-            if(i%2==0)
-                mfriendItems.add(new FriendItem(R.drawable.menu_person,i+"번째 사람",i+"번째 상태메시지"));
-            else
-                mfriendItems.add(new FriendItem(R.drawable.menu_person,i+"번째 사람",i+"번째 상태메시지"));
+        searchButton.setOnClickListener(view -> {
+            String keywordText = keywordEditText.getText().toString();
 
-        }
-        mRecyclerAdapter.setFriendList(mfriendItems);
+            if (api != null) {
+                // API 호출
+                Call<List<YoutubeVidioDto>> call = api.youtubeSearch(keywordText);
+                call.enqueue(new Callback<List<YoutubeVidioDto>>() {
+                    @Override
+                    public void onResponse(Call<List<YoutubeVidioDto>> call, Response<List<YoutubeVidioDto>> response) {
+                        if (response.isSuccessful()) {
+                            ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
+                            videoDtoList = response.body();
 
+                            for (YoutubeVidioDto videoDto : videoDtoList) {
+                                VidioImage vidioImage = videoDto.getParsedVidioImage();
+                                if (vidioImage != null) {
+                                    youtubeItems.add(new YoutubeItem(vidioImage.getDefaultQuality().getUrl(), videoDto.getVidioTitle()));
+                                }
+                            }
+                            // 어댑터에 데이터 추가
+                            mRecyclerAdapter.setYoutubeItems(youtubeItems);
+                        } else {
+                            Toast.makeText(SearchMusic.this, "Response Error: " + response.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-
-
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_menu);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
-
-                /*switch (menuItem.getItemId()){
-                    case R.id.home:
-                        intent = new Intent(main.this, InputAllergy.class);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.search:
-                        intent = new Intent(main.this, AllergyFoodListInfo.class);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.headset:
-                        intent = new Intent(main.this, Map.class);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.person:
-                        intent = new Intent(main.this, UserInformation.class);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.add:
-                        intent = new Intent(main.this, UserInformation.class);
-                        startActivity(intent);
-                        return true;
-                }*/
-
-                return false;
+                    @Override
+                    public void onFailure(Call<List<YoutubeVidioDto>> call, Throwable t) {
+                        Toast.makeText(SearchMusic.this, "API Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(SearchMusic.this, "API 객체가 초기화되지 않았습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
+        /*// 리사이클러뷰 아이템 클릭 이벤트 처리
+        mRecyclerAdapter.setOnItemClickListener(position -> {
+            // 클릭된 동영상 정보 가져오기
+            YoutubeVidioDto selectedVideo = videoDtoList.get(position);
 
+            // 프래그먼트로 데이터 전달
+            VideoPlayerFragment fragment = VideoPlayerFragment.newInstance((ArrayList<YoutubeVidioDto>) videoDtoList, position);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            *//*transaction.replace(R.id.fragment_video_player, fragment); // 프래그먼트를 교체할 레이아웃 ID*//*
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });*/
+
+
+
+        // 하단 네비게이션바
+        bottomNavigationView = findViewById(R.id.bottom_menu);
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            /*switch (menuItem.getItemId()) {
+                case R.id.home:
+                    intent = new Intent(SearchMusic.this, InputAllergy.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.search:
+                    intent = new Intent(SearchMusic.this, AllergyFoodListInfo.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.headset:
+                    intent = new Intent(SearchMusic.this, Map.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.person:
+                    intent = new Intent(SearchMusic.this, UserInformation.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.add:
+                    intent = new Intent(SearchMusic.this, UserInformation.class);
+                    startActivity(intent);
+                    return true;
+            }*/
+
+            return false;
+        });
     }
-
-
-
 }

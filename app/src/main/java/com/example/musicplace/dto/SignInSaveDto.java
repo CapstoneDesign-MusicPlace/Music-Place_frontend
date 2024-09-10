@@ -3,7 +3,7 @@ package com.example.musicplace.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SignInSaveDto { // 사용 X (혹시 몰라서 놔둠)
+public class SignInSaveDto {
     @SerializedName("member_id")
     private String member_id;
     @SerializedName("pw")
