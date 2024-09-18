@@ -1,15 +1,9 @@
-package com.example.musicplace.main;
+package com.example.musicplace.youtubeMusicPlayer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.musicplace.R;
-import com.example.musicplace.dto.youtub.YoutubeVidioDto;
-import com.example.musicplace.join;
-import com.example.musicplace.start;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
+
 import java.util.ArrayList;
 
 public class musicPlayer extends AppCompatActivity {

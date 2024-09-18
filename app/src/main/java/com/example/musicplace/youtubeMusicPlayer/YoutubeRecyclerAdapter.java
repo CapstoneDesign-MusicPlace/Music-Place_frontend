@@ -1,4 +1,4 @@
-package com.example.musicplace.main;
+package com.example.musicplace.youtubeMusicPlayer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplace.R;
-import com.example.musicplace.dto.youtub.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 
 import java.util.ArrayList;
 

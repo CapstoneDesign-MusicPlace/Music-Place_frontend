@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".join">
+    tools:context=".sign.join">
 
 
     <LinearLayout

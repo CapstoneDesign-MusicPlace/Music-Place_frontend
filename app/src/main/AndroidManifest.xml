@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,25 +16,37 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".main.musicPlayer"
+            android:name=".playlist.addPlaylist"
             android:exported="false" />
         <activity
-            android:name=".main.SearchMusic"
+            android:name=".playlist.editPlaylist"
             android:exported="false" />
         <activity
-            android:name=".findId"
+            android:name=".playlist.DetailedPlaylist"
             android:exported="false" />
         <activity
-            android:name=".findPw"
+            android:name=".playlist.MyPlaylist"
             android:exported="false" />
         <activity
-            android:name=".login"
+            android:name=".youtubeMusicPlayer.musicPlayer"
             android:exported="false" />
         <activity
-            android:name=".join"
+            android:name=".youtubeMusicPlayer.SearchMusic"
             android:exported="false" />
         <activity
-            android:name=".start"
+            android:name=".sign.findId"
+            android:exported="false" />
+        <activity
+            android:name=".sign.findPw"
+            android:exported="false" />
+        <activity
+            android:name=".sign.login"
+            android:exported="false" />
+        <activity
+            android:name=".sign.join"
+            android:exported="false" />
+        <activity
+            android:name=".sign.start"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

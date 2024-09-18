@@ -1,4 +1,4 @@
-package com.example.musicplace.dto;
+package com.example.musicplace.sign.dto;
 
 
 import com.google.gson.annotations.SerializedName;

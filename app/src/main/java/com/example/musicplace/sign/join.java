@@ -1,4 +1,4 @@
-package com.example.musicplace;
+package com.example.musicplace.sign;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.musicplace.dto.Gender;
-import com.example.musicplace.dto.SignInSaveDto;
+import com.example.musicplace.R;
+import com.example.musicplace.sign.dto.Gender;
+import com.example.musicplace.sign.dto.SignInSaveDto;
 import com.example.musicplace.retrofit.UserApiInterface;
 import com.example.musicplace.retrofit.RetrofitClient;
 

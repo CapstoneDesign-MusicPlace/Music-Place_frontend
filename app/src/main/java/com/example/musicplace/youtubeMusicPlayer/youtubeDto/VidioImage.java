@@ -1,6 +1,5 @@
-package com.example.musicplace.dto.youtub;
+package com.example.musicplace.youtubeMusicPlayer.youtubeDto;
 
-import com.example.musicplace.dto.youtub.ImageQuality;
 import com.google.gson.annotations.SerializedName;
 
 public class VidioImage {

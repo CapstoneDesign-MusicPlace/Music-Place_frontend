@@ -1,4 +1,4 @@
-package com.example.musicplace;
+package com.example.musicplace.sign;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.musicplace.main.SearchMusic;
+import com.example.musicplace.R;
+import com.example.musicplace.youtubeMusicPlayer.SearchMusic;
 
 public class login extends AppCompatActivity {
 

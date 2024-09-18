@@ -1,4 +1,4 @@
-package com.example.musicplace.main;
+package com.example.musicplace.youtubeMusicPlayer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,15 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
 
-import com.example.musicplace.dto.youtub.YoutubeItem;
-import com.example.musicplace.dto.youtub.VidioImage;
-import com.example.musicplace.dto.youtub.YoutubeVidioDto;
+import com.example.musicplace.main.youtubeDto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.youtubeDto.VidioImage;
+import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
+import com.example.musicplace.playlist.MyPlaylist;
 import com.example.musicplace.retrofit.RetrofitClient;
 import com.example.musicplace.retrofit.UserApiInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +35,7 @@ import retrofit2.Response;
 public class SearchMusic extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private Intent intent;
     private EditText keywordEditText;
     private Button searchButton;
     private UserApiInterface api;
@@ -114,32 +117,20 @@ public class SearchMusic extends AppCompatActivity {
         // 하단 네비게이션바
         bottomNavigationView = findViewById(R.id.bottom_menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            /*switch (menuItem.getItemId()) {
-                case R.id.home:
-                    intent = new Intent(SearchMusic.this, InputAllergy.class);
-                    startActivity(intent);
-                    return true;
 
-                case R.id.search:
-                    intent = new Intent(SearchMusic.this, AllergyFoodListInfo.class);
-                    startActivity(intent);
-                    return true;
-
-                case R.id.headset:
-                    intent = new Intent(SearchMusic.this, Map.class);
-                    startActivity(intent);
-                    return true;
-
-                case R.id.person:
-                    intent = new Intent(SearchMusic.this, UserInformation.class);
-                    startActivity(intent);
-                    return true;
-
-                case R.id.add:
-                    intent = new Intent(SearchMusic.this, UserInformation.class);
-                    startActivity(intent);
-                    return true;
-            }*/
+            if(menuItem.getItemId() == R.id.headset) {
+                intent = new Intent(SearchMusic.this, Map.class);
+                startActivity(intent);
+                return true;
+            } else if(menuItem.getItemId() == R.id.person) {
+                intent = new Intent(SearchMusic.this, Map.class);
+                startActivity(intent);
+                return true;
+            } else if(menuItem.getItemId() == R.id.add) {
+                intent = new Intent(SearchMusic.this, MyPlaylist.class);
+                startActivity(intent);
+                return true;
+            }
 
             return false;
         });

@@ -1,6 +1,4 @@
-package com.example.musicplace.dto.youtub;
-
-import android.os.Parcelable;
+package com.example.musicplace.youtubeMusicPlayer.youtubeDto;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
