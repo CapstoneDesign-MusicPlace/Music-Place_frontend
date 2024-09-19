@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
-import com.example.musicplace.youtubeMusicPlayer.SearchMusic;
+import com.example.musicplace.main.mainDisplay;
 
 public class login extends AppCompatActivity {
 
@@ -70,7 +70,8 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View view) { // 로그인 성공시 동작
 
-                Intent intent = new Intent(login.this, SearchMusic.class);
+                // api 연결 필요
+                Intent intent = new Intent(login.this, mainDisplay.class);
                 startActivity(intent);
             }
         });

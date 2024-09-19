@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
+import com.example.musicplace.follow.follow;
+import com.example.musicplace.main.mainDisplay;
 import com.example.musicplace.youtubeMusicPlayer.SearchMusic;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.retrofit.UserApiInterface;
@@ -103,16 +105,20 @@ public class MyPlaylist extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.add);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
 
-            if(menuItem.getItemId() == R.id.headset) {
-                intent = new Intent(MyPlaylist.this, Map.class);
+            if(menuItem.getItemId() == R.id.home) {
+                intent = new Intent(MyPlaylist.this, mainDisplay.class);
                 startActivity(intent);
                 return true;
-            } else if(menuItem.getItemId() == R.id.person) {
-                intent = new Intent(MyPlaylist.this, Map.class);
-                startActivity(intent);
-                return true;
-            } else if(menuItem.getItemId() == R.id.home) {
+            } else if(menuItem.getItemId() == R.id.search) {
                 intent = new Intent(MyPlaylist.this, SearchMusic.class);
+                startActivity(intent);
+                return true;
+            } /*else if(menuItem.getItemId() == R.id.headset) {
+                intent = new Intent(MyPlaylist.this, SearchMusic.class);
+                startActivity(intent);
+                return true;
+            }*/ else if(menuItem.getItemId() == R.id.person) {
+                intent = new Intent(MyPlaylist.this, follow.class);
                 startActivity(intent);
                 return true;
             }

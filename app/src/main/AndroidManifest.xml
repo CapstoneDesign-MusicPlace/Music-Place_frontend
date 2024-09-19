@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".follow.follow"
+            android:exported="false" />
+        <activity
+            android:name=".main.mainDisplay"
+            android:exported="false" />
+        <activity
             android:name=".playlist.addPlaylist"
             android:exported="false" />
         <activity

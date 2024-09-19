@@ -31,23 +31,35 @@
         android:id="@+id/join"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="가입하기" />
+        android:text="가입하기"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"/>
 
     <Button
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="이메일" />
+        android:text="이메일"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"/>
 
     <Button
         android:id="@+id/kakao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="kakao talk" />
+        android:text="kakao talk"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"/>
 
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="로그인" />
+        android:text="로그인"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"/>
 </LinearLayout>

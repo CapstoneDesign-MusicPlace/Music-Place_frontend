@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
 
-import com.example.musicplace.main.youtubeDto.YoutubeItem;
+import com.example.musicplace.follow.follow;
+import com.example.musicplace.main.mainDisplay;
+import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.VidioImage;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
 import com.example.musicplace.playlist.MyPlaylist;
@@ -116,14 +118,19 @@ public class SearchMusic extends AppCompatActivity {
 
         // 하단 네비게이션바
         bottomNavigationView = findViewById(R.id.bottom_menu);
+        bottomNavigationView.setSelectedItemId(R.id.search);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
 
-            if(menuItem.getItemId() == R.id.headset) {
+            if(menuItem.getItemId() == R.id.home) {
+                intent = new Intent(SearchMusic.this, mainDisplay.class);
+                startActivity(intent);
+                return true;
+            } /*else if(menuItem.getItemId() == R.id.headset) {
                 intent = new Intent(SearchMusic.this, Map.class);
                 startActivity(intent);
                 return true;
-            } else if(menuItem.getItemId() == R.id.person) {
-                intent = new Intent(SearchMusic.this, Map.class);
+            }*/ else if(menuItem.getItemId() == R.id.person) {
+                intent = new Intent(SearchMusic.this, follow.class);
                 startActivity(intent);
                 return true;
             } else if(menuItem.getItemId() == R.id.add) {
