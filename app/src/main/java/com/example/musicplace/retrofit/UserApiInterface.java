@@ -15,6 +15,11 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface UserApiInterface {
+
+    @POST("/auth/google")
+    Call<Void> sendIdTokenToServer(@Body String idToken);
+
+
     @POST("sign_in")
     Call<SignInSaveDto> saveMember(@Body SignInSaveDto data);
 
