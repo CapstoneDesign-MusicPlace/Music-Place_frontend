@@ -17,18 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.musicplace.R;
 
 import com.example.musicplace.follow.follow;
+import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.main.mainDisplay;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.VidioImage;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
 import com.example.musicplace.playlist.MyPlaylist;
-import com.example.musicplace.retrofit.RetrofitClient;
-import com.example.musicplace.retrofit.UserApiInterface;
+import com.example.musicplace.global.retrofit.RetrofitClient;
+import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,8 +56,11 @@ public class SearchMusic extends AppCompatActivity {
             return insets;
         });
 
-        // Retrofit 클라이언트 생성 및 API 인터페이스 연결
-        api = RetrofitClient.getRetrofit().create(UserApiInterface.class);
+        // TokenManager 생성
+        TokenManager tokenManager = new TokenManager(this);
+
+        // RetrofitClient에 TokenManager를 전달
+        api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
 
         // 리사이클러뷰 초기화
         RecyclerView recyclerView = findViewById(R.id.recyclerView);

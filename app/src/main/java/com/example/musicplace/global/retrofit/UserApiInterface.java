@@ -1,4 +1,4 @@
-package com.example.musicplace.retrofit;
+package com.example.musicplace.global.retrofit;
 
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.sign.dto.LoginRequestDto;
@@ -48,11 +48,11 @@ public interface UserApiInterface {
 
     // 플리 수정
     @PATCH("playList/{pl_id}")
-    void PLUpdate(@Path("pl_id") String pl_id);
+    Call<Void> PLUpdate(@Path("pl_id") String pl_id);
 
     // 플리 삭제
     @DELETE("playList/{pl_id}")
-    void PLDelete(@Path("pl_id") String pl_id);
+    Call<Void> PLDelete(@Path("pl_id") Long pl_id);
 
     // 모든 플리 조회
     @GET("playList")

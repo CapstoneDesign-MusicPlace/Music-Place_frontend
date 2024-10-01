@@ -1,11 +1,6 @@
 package com.example.musicplace.sign;
 
-import static android.content.ContentValues.TAG;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,10 +14,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.musicplace.BuildConfig;
 import com.example.musicplace.R;
-import com.example.musicplace.retrofit.UserApiInterface;
-import com.example.musicplace.sign.dto.LoginResponseDto;
+import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,11 +24,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import org.jetbrains.annotations.Nullable;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 
 public class start extends AppCompatActivity {

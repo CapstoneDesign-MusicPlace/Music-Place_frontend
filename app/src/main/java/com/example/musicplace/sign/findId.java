@@ -31,8 +31,7 @@ public class findId extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(findId.this, login.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

@@ -4,28 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.musicplace.R;
-import com.example.musicplace.playlist.dto.PlaylistDto;
+import com.example.musicplace.playlist.dto.CommentSaveDto;
 
 import java.util.ArrayList;
 
-public class PlaylistRecyclerAdapter extends RecyclerView.Adapter<PlaylistRecyclerAdapter.ViewHolder> {
+public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecyclerAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<PlaylistDto> playlistItems;
+    private ArrayList<CommentSaveDto> commentItems;
     private OnItemClickListener onItemClickListener;
 
     // 어댑터 생성자
-    public PlaylistRecyclerAdapter(Context context, ArrayList<PlaylistDto> playlistItems) {
+    public CommentRecyclerAdapter(Context context, ArrayList<CommentSaveDto> commentItems) {
         this.context = context;
-        this.playlistItems = playlistItems;
+        this.commentItems = commentItems;
     }
 
     @NonNull
@@ -38,22 +36,12 @@ public class PlaylistRecyclerAdapter extends RecyclerView.Adapter<PlaylistRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // PlaylistDto에서 데이터 가져오기
-        PlaylistDto playlistItem = playlistItems.get(position);
+        // CommentSaveDto에서 데이터 가져오기
+        CommentSaveDto commentItem = commentItems.get(position);
 
-        // titleTextView 및 nameTextView에 텍스트 설정
-        holder.titleTextView.setText(playlistItem.getPlaylistTitle());
-        holder.nameTextView.setText(playlistItem.getCreatorName());
-
-        // 이미지 로드 (URL을 사용하는 경우 Glide 사용)
-        if (playlistItem.getImageUrl() != null && !playlistItem.getImageUrl().isEmpty()) {
-            Glide.with(context)
-                    .load(playlistItem.getImageUrl())
-                    .into(holder.thumbnailImageView);
-        } else {
-            // 기본 이미지 설정
-            holder.thumbnailImageView.setImageResource(R.drawable.playlistimg);
-        }
+        // nameTextView 및 commentTextView에 텍스트 설정
+        holder.nameTextView.setText(commentItem.getNickName());
+        holder.commentTextView.setText(commentItem.getComment());
 
         // 아이템 클릭 이벤트 처리
         holder.itemView.setOnClickListener(v -> {
@@ -65,26 +53,24 @@ public class PlaylistRecyclerAdapter extends RecyclerView.Adapter<PlaylistRecycl
 
     @Override
     public int getItemCount() {
-        return playlistItems.size();
+        return commentItems.size();
     }
 
     // ViewHolder 클래스
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView thumbnailImageView;
-        TextView titleTextView;
         TextView nameTextView;
+        TextView commentTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            thumbnailImageView = itemView.findViewById(R.id.thumbnailImageView);
-            titleTextView = itemView.findViewById(R.id.titleTextView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
+            commentTextView = itemView.findViewById(R.id.commentTextView);
         }
     }
 
     // 어댑터 데이터 갱신 메서드
-    public void setPlaylistItems(ArrayList<PlaylistDto> playlistItems) {
-        this.playlistItems = playlistItems;
+    public void setCommentItems(ArrayList<CommentSaveDto> commentItems) {
+        this.commentItems = commentItems;
         notifyDataSetChanged();
     }
 

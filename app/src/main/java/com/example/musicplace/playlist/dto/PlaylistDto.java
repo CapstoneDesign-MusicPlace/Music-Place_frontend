@@ -1,8 +1,13 @@
 package com.example.musicplace.playlist.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PlaylistDto {
+    @SerializedName("playlistTitle")
     private String playlistTitle;  // 플레이리스트 제목
+    @SerializedName("creatorName")
     private String creatorName;    // 플레이리스트 생성자
+    @SerializedName("imageUrl")
     private String imageUrl;       // 이미지 URL 또는 로컬 이미지 경로
 
     // 생성자

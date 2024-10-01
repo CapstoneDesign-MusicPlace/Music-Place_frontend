@@ -16,10 +16,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
+import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.sign.dto.Gender;
 import com.example.musicplace.sign.dto.SignInSaveDto;
-import com.example.musicplace.retrofit.UserApiInterface;
-import com.example.musicplace.retrofit.RetrofitClient;
+import com.example.musicplace.global.retrofit.UserApiInterface;
+import com.example.musicplace.global.retrofit.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +42,11 @@ public class join extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        api = RetrofitClient.getRetrofit().create(UserApiInterface.class);
+        // TokenManager 생성
+        TokenManager tokenManager = new TokenManager(this);
+
+        // RetrofitClient에 TokenManager를 전달
+        api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
 
         setContentView(R.layout.activity_join);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -79,8 +84,7 @@ public class join extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // start 화면으로 돌아가기
-                Intent intent = new Intent(join.this, start.class);
-                startActivity(intent);
+                finish();
             }
         });
 

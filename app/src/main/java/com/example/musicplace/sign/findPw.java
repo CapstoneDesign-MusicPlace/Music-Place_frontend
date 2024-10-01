@@ -33,8 +33,7 @@ public class findPw extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(findPw.this, login.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

@@ -15,9 +15,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
+import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.main.mainDisplay;
-import com.example.musicplace.retrofit.RetrofitClient;
-import com.example.musicplace.retrofit.UserApiInterface;
+import com.example.musicplace.global.retrofit.RetrofitClient;
+import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.sign.dto.LoginRequestDto;
 import com.example.musicplace.sign.dto.LoginResponseDto;
 
@@ -42,15 +43,18 @@ public class login extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        api = RetrofitClient.getRetrofit().create(UserApiInterface.class);
+        // TokenManager 생성
+        TokenManager tokenManager = new TokenManager(this);
+
+        // RetrofitClient에 TokenManager를 전달
+        api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
 
         back_login = (ImageButton) findViewById(R.id.back_login);
         back_login.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) { // 초기 화면으로 이동
-                Intent intent = new Intent(login.this, start.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -100,7 +104,8 @@ public class login extends AppCompatActivity {
                             String token = response.body().getToken();
 
                             // 토큰 저장
-
+                            TokenManager tokenManager = new TokenManager(login.this);
+                            tokenManager.saveToken(token);
 
                             // 메인 화면으로 이동
                             Intent intent = new Intent(login.this, mainDisplay.class);
@@ -117,6 +122,7 @@ public class login extends AppCompatActivity {
                 });
             }
         });
+
 
     }
 
