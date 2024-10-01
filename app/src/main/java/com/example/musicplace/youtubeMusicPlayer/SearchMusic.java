@@ -91,7 +91,10 @@ public class SearchMusic extends AppCompatActivity {
                             // 어댑터에 데이터 추가
                             mRecyclerAdapter.setYoutubeItems(youtubeItems);
                         } else {
+/*
                             Toast.makeText(SearchMusic.this, "Response Error: " + response.toString(), Toast.LENGTH_SHORT).show();
+*/
+                            System.out.println(response.toString());
                         }
                     }
 

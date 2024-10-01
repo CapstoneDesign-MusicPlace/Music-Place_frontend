@@ -1,9 +1,15 @@
 package com.example.musicplace.sign;
 
+import static android.content.ContentValues.TAG;
+
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -16,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.musicplace.BuildConfig;
 import com.example.musicplace.R;
 import com.example.musicplace.retrofit.UserApiInterface;
+import com.example.musicplace.sign.dto.LoginResponseDto;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,8 +41,8 @@ import retrofit2.Response;
 public class start extends AppCompatActivity {
 
     private Button join, google, login;
-    private static final int RC_SIGN_IN = 9001;
-    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 100;
+    private GoogleSignInClient googleSignInClient;
     private UserApiInterface api;
 
     @Override
@@ -50,14 +57,14 @@ public class start extends AppCompatActivity {
             return insets;
         });
 
-        // GoogleSignInOptions 구성
+        // GoogleSignInOptions 설정
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(BuildConfig.serverClientId) // 환경 변수로부터 서버 클라이언트 ID 가져오기
+                .requestIdToken("859929355457-had21bnjr1d1ohs24n1o5jao72o2vjuf.apps.googleusercontent.com") // 클라이언트 ID 사용
                 .requestEmail()
                 .build();
 
         // GoogleSignInClient 초기화
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // 회원가입 화면 이동
         join = findViewById(R.id.join);
@@ -67,9 +74,6 @@ public class start extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 구글 로그인 버튼 클릭 시
-        google = findViewById(R.id.google);
-        google.setOnClickListener(view -> signIn());
 
         // 로그인 화면 이동
         login = findViewById(R.id.login);
@@ -77,15 +81,25 @@ public class start extends AppCompatActivity {
             Intent intent = new Intent(start.this, login.class);
             startActivity(intent);
         });
+
+        // 로그인 버튼 설정
+        Button googleSignInButton = findViewById(R.id.google);
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
     }
 
-    // 구글 로그인 요청
+
+
+
     private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    // 로그인 결과 처리
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -94,36 +108,22 @@ public class start extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                if (account != null) {
-                    String idToken = account.getIdToken();
-                    sendTokenToServer(idToken);  // 서버로 토큰 전송
-                }
+                String idToken = account.getIdToken();
+                Log.d("GoogleSignIn", "IdToken: " + idToken);
+                // 여기서 idToken을 서버로 전송하거나, 필요한 작업을 수행할 수 있습니다.
+                // handleSignInResult(idToken); 호출 없이 처리 가능
             } catch (ApiException e) {
-                Log.w("Google Sign In", "signInResult:failed code=" + e.getStatusCode());
-                Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show();
+                Log.w("GoogleSignIn", "signInResult:failed code=" + e.getStatusCode());
+                Toast.makeText(this, "구글 로그인 실패", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    // 서버로 ID 토큰 전송 (Retrofit 또는 OkHttp를 사용한 구현 필요)
-    private void sendTokenToServer(String idToken) {
 
-        Call<Void> call = api.sendIdTokenToServer(idToken);
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(start.this, "토큰 전송 성공", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(start.this, "토큰 전송 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(start.this, "서버 오류", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void handleSignInResult(String idToken) {
+        // 여기에서 idToken을 서버로 보내서 검증하는 로직을 작성
+        // 예시: Retrofit 등을 사용해 서버로 토큰 전송
     }
+
+
 }
