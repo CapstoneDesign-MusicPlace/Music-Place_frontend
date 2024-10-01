@@ -158,16 +158,15 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="25dp"/>
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="380dp"
                 android:layout_height="550dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/recycleViewBackground" />
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"

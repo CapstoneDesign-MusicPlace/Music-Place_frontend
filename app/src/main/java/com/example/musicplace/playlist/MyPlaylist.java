@@ -2,7 +2,6 @@ package com.example.musicplace.playlist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -20,11 +19,11 @@ import com.example.musicplace.follow.follow;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.main.mainDisplay;
+import com.example.musicplace.playlist.adapter.PlaylistRecyclerAdapter;
 import com.example.musicplace.playlist.dto.PlaylistDto;
 import com.example.musicplace.youtubeMusicPlayer.SearchMusic;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.global.retrofit.UserApiInterface;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -92,7 +91,7 @@ public class MyPlaylist extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(MyPlaylist.this, addPlaylist.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1001);
             }
         });
 
@@ -135,13 +134,14 @@ public class MyPlaylist extends AppCompatActivity {
                     musicListDto = response.body();
 
                     ArrayList<PlaylistDto> playlistDtoList = (ArrayList<PlaylistDto>) musicListDto.stream()
-                            .map(pl -> new PlaylistDto(pl.getPLTitle(), pl.getNickname(), pl.getCover_img())) // nickname은 기본값 사용
+                            .map(pl -> new PlaylistDto(pl.getPLTitle(), pl.getNickname(), pl.getCover_img()))
                             .collect(Collectors.toList());
 
                     // 어댑터에 데이터를 설정하고 갱신
                     playlistRecyclerAdapter.setPlaylistItems(playlistDtoList);
                 } else {
-                    Toast.makeText(MyPlaylist.this, "플레이리스트 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    /*Toast.makeText(MyPlaylist.this, "플레이리스트 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();*/
+                    System.out.println("플레이리스트 데이터를 불러오는데 실패했습니다.");
                 }
             }
             @Override

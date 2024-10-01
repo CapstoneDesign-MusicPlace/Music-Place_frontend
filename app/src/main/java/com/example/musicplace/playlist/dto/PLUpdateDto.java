@@ -1,16 +1,22 @@
 package com.example.musicplace.playlist.dto;
 
 public class PLUpdateDto {
+    private String title;
     private OnOff onOff;
 
     private String cover_img;
 
     private String comment;
 
-    public PLUpdateDto(OnOff onOff, String cover_img, String comment) {
+    public PLUpdateDto(String title, OnOff onOff, String cover_img, String comment) {
+        this.title = title;
         this.onOff = onOff;
         this.cover_img = cover_img;
         this.comment = comment;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public OnOff getOnOff() {
