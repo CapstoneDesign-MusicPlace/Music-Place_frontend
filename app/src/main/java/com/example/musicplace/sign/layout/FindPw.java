@@ -1,6 +1,5 @@
-package com.example.musicplace.sign;
+package com.example.musicplace.sign.layout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
 
-public class findPw extends AppCompatActivity {
+public class FindPw extends AppCompatActivity {
 
     private ImageButton back_login;
     @Override

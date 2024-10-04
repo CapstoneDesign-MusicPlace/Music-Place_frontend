@@ -80,7 +80,7 @@ public interface UserApiInterface {
 
     // 플리 - 노래 삭제
     @DELETE("playList/music/{PLId}/{MusicId}")
-    Call<Boolean> MusicSave(@Path("PLId") Long PLId, @Path("MusicId") Long MusicId);
+    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Path("MusicId") Long MusicId);
 
     // 플리 - 노래 목록 조회
     @GET("playList/music/{PLId}")

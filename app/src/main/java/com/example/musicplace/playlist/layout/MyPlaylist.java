@@ -1,4 +1,4 @@
-package com.example.musicplace.playlist;
+package com.example.musicplace.playlist.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.main.mainDisplay;
 import com.example.musicplace.playlist.adapter.PlaylistRecyclerAdapter;
 import com.example.musicplace.playlist.dto.PlaylistDto;
-import com.example.musicplace.youtubeMusicPlayer.SearchMusic;
+import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,9 +40,7 @@ public class MyPlaylist extends AppCompatActivity {
     private Intent intent;
     private PlaylistRecyclerAdapter playlistRecyclerAdapter;
     private UserApiInterface api;
-
     private List<ResponsePLDto> musicListDto;
-
     private ImageButton addPlaylistBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +88,7 @@ public class MyPlaylist extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                intent = new Intent(MyPlaylist.this, addPlaylist.class);
+                intent = new Intent(MyPlaylist.this, AddPlaylist.class);
                 startActivityForResult(intent, 1001);
             }
         });

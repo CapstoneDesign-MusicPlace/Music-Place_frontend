@@ -1,4 +1,4 @@
-package com.example.musicplace.playlist;
+package com.example.musicplace.playlist.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,17 +21,13 @@ import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
-import com.example.musicplace.playlist.dto.PlaylistDto;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
-import com.example.musicplace.playlist.dto.ResponsePLDto;
-import com.example.musicplace.youtubeMusicPlayer.YoutubeRecyclerAdapter;
+import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,7 +98,7 @@ public class DetailedPlaylist extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                intent = new Intent(DetailedPlaylist.this, editPlaylist.class);
+                intent = new Intent(DetailedPlaylist.this, EditPlaylist.class);
                 intent.putExtra("playlistId", playlistId);
                 intent.putExtra("playlistTitle", playlistTitle);
                 intent.putExtra("nickname;", nickname);

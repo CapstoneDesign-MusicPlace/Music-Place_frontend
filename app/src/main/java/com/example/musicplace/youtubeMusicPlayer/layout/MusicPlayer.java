@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer;
+package com.example.musicplace.youtubeMusicPlayer.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +15,13 @@ import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
 
 import java.util.ArrayList;
 
-public class musicPlayer extends AppCompatActivity {
+public class MusicPlayer extends AppCompatActivity {
 
     private ArrayList<YoutubeVidioDto> videoDtoList;
     private int position;
-    private Button back;
+    private Button back, add;
+
+    private String vidioTitle, vidioId, vidioImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,9 @@ public class musicPlayer extends AppCompatActivity {
         // Intent로부터 데이터 수신
         Intent intent = getIntent();
         if (intent != null) {
-            String vidioTitle = intent.getStringExtra("VidioTitle");
-            String vidioId = intent.getStringExtra("VidioId");
+            vidioTitle = intent.getStringExtra("VidioTitle");
+            vidioId = intent.getStringExtra("VidioId");
+            vidioImage = intent.getStringExtra("VidioImage");
 
             // VideoFragment에 데이터 전달
             Bundle bundle = new Bundle();
@@ -58,10 +61,23 @@ public class musicPlayer extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // start 화면으로 돌아가기
-                Intent intent = new Intent(musicPlayer.this, SearchMusic.class);
+                // 이전 화면으로 이동
+                finish();
+            }
+        });
 
+
+        add = (Button) findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 플레이 리스트 목록으로 이동
+                Intent intent = new Intent(MusicPlayer.this, SelectPlaylist.class);
+                intent.putExtra("VidioTitle", vidioTitle);
+                intent.putExtra("VidioId", vidioId);
+                intent.putExtra("VidioImage",vidioImage);
                 startActivity(intent);
+
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.example.musicplace.playlist;
+package com.example.musicplace.playlist.layout;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -27,10 +26,8 @@ import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.playlist.adapter.EditMusicRecyclerAdapter;
 import com.example.musicplace.playlist.dto.OnOff;
-import com.example.musicplace.playlist.dto.PLSaveDto;
 import com.example.musicplace.playlist.dto.PLUpdateDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
-import com.example.musicplace.youtubeMusicPlayer.YoutubeRecyclerAdapter;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class editPlaylist extends AppCompatActivity {
+public class EditPlaylist extends AppCompatActivity {
     // 플레이리스트를 편집하는 페이지
     private Intent intent;
     private UserApiInterface api;
@@ -136,7 +133,7 @@ public class editPlaylist extends AppCompatActivity {
                     }
                     else {onOff = OnOff.Private;}
                 } else {
-                    Toast.makeText(editPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
                     return; // 선택되지 않은 경우 실행 중단
                 }
                 PLUpdateDto plUpdateDto = new PLUpdateDto(title, onOff, image, comment);
@@ -177,18 +174,18 @@ public class editPlaylist extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(editPlaylist.this,plUpdateDto.getTitle() +"가 수정되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPlaylist.this,plUpdateDto.getTitle() +"가 수정되었습니다.", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
 
                     finish();  // 액티비티 종료
                 } else {
-                    Toast.makeText(editPlaylist.this,plUpdateDto.getTitle() +"가 수정에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPlaylist.this,plUpdateDto.getTitle() +"가 수정에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(editPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -211,13 +208,13 @@ public class editPlaylist extends AppCompatActivity {
                     // 어댑터에 데이터를 설정하고 갱신
                     editMusicRecyclerAdapter.setYoutubeItems(youtubeItems);
                 } else {
-                    Toast.makeText(editPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ResponseMusicDto>> call, Throwable t) {
-                Toast.makeText(editPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

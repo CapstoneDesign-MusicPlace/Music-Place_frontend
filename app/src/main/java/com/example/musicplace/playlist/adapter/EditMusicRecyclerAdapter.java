@@ -32,7 +32,7 @@ public class EditMusicRecyclerAdapter extends RecyclerView.Adapter<EditMusicRecy
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // 아이템 레이아웃을 inflate
-        View view = LayoutInflater.from(context).inflate(R.layout.item_checkyoutube, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_check_youtube, parent, false);
         return new ViewHolder(view);
     }
 

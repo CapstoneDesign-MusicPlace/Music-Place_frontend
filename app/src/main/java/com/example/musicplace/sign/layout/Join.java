@@ -1,4 +1,4 @@
-package com.example.musicplace.sign;
+package com.example.musicplace.sign.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class join extends AppCompatActivity {
+public class Join extends AppCompatActivity {
     // 회원가입을 진행하는 페이지
 
     private ImageButton back_login, finish;
@@ -120,15 +120,15 @@ public class join extends AppCompatActivity {
                             System.out.println("onFailure : " + t.getMessage());
                         }
                     });
-                    Intent intent = new Intent(join.this, start.class);
+                    Intent intent = new Intent(Join.this, Start.class);
                     startActivity(intent);
                 }
                 else {
                     if(!passWord.equals(rePassWord)) {
-                        Toast.makeText(join.this, "pw와 repw의 비밀번호가 동일하지 않습니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Join.this, "pw와 repw의 비밀번호가 동일하지 않습니다", Toast.LENGTH_SHORT).show();
                     }
                     if(!checkIdState) {
-                        Toast.makeText(join.this, "아이디 중복을 확인해 주세요", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Join.this, "아이디 중복을 확인해 주세요", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -151,9 +151,9 @@ public class join extends AppCompatActivity {
                             checkIdState = response.body();
                             System.out.println("Successful : " + checkIdState);
                             if(!checkIdState) {
-                                Toast.makeText(join.this, "동일한 아이디가 존재합니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Join.this, "동일한 아이디가 존재합니다", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(join.this, "사용 가능한 아이디입니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Join.this, "사용 가능한 아이디입니다", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             System.out.println("Successful : " + response.toString());

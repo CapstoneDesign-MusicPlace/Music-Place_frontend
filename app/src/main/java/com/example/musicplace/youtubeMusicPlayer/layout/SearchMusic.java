@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer;
+package com.example.musicplace.youtubeMusicPlayer.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,11 @@ import com.example.musicplace.R;
 import com.example.musicplace.follow.follow;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.main.mainDisplay;
+import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.VidioImage;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
-import com.example.musicplace.playlist.MyPlaylist;
+import com.example.musicplace.playlist.layout.MyPlaylist;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,8 +59,6 @@ public class SearchMusic extends AppCompatActivity {
 
         // TokenManager 생성
         TokenManager tokenManager = new TokenManager(this);
-
-        // RetrofitClient에 TokenManager를 전달
         api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
 
         // 리사이클러뷰 초기화
@@ -114,10 +113,10 @@ public class SearchMusic extends AppCompatActivity {
         // RecyclerView 아이템 클릭 리스너
         mRecyclerAdapter.setOnItemClickListener((position) -> {
             // 클릭된 아이템의 YoutubeItem 데이터 가져오기
-            Intent intent = new Intent(getApplicationContext(),musicPlayer.class);
+            Intent intent = new Intent(getApplicationContext(), MusicPlayer.class);
             intent.putExtra("VidioTitle", videoDtoList.get(position).getVidioTitle());
             intent.putExtra("VidioId", videoDtoList.get(position).getVidioId());
-            System.out.println(position);
+            intent.putExtra("VidioImage",videoDtoList.get(position).getParsedVidioImage().getDefaultQuality().getUrl().toString());
             startActivity(intent);
         });
 

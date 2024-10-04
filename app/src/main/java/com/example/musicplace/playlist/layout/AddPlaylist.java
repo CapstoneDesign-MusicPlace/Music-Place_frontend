@@ -1,14 +1,11 @@
-package com.example.musicplace.playlist;
+package com.example.musicplace.playlist.layout;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -29,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class addPlaylist extends AppCompatActivity {
+public class AddPlaylist extends AppCompatActivity {
 
     private EditText editTextTitle, commentEditText;
     private RadioGroup radioGroup;
@@ -81,7 +78,7 @@ public class addPlaylist extends AppCompatActivity {
                 }
                 else {onOff = OnOff.Private;}
             } else {
-                Toast.makeText(addPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
                 return; // 선택되지 않은 경우 실행 중단
             }
 
@@ -116,17 +113,17 @@ public class addPlaylist extends AppCompatActivity {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(addPlaylist.this, plSaveDto.getTitle()+"가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPlaylist.this, plSaveDto.getTitle()+"가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();  // 액티비티 종료
                 } else {
-                    Toast.makeText(addPlaylist.this, plSaveDto.getTitle()+"가 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPlaylist.this, plSaveDto.getTitle()+"가 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Long> call, Throwable t) {
-                Toast.makeText(addPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

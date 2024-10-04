@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".youtubeMusicPlayer.musicPlayer"
+    tools:context=".youtubeMusicPlayer.layout.MusicPlayer"
     android:background="@color/background"
     android:orientation="vertical">
 
@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <Button
@@ -25,14 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="back" />
+            android:text="나가기" />
 
         <Button
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="add" />
+            android:text="추가" />
     </LinearLayout>
 
 </LinearLayout>

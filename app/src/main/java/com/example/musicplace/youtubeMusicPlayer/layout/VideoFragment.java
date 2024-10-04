@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer;
+package com.example.musicplace.youtubeMusicPlayer.layout;
 
 
 import android.os.Bundle;

@@ -11,11 +11,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
 import com.example.musicplace.follow.follow;
-import com.example.musicplace.playlist.MyPlaylist;
-import com.example.musicplace.youtubeMusicPlayer.SearchMusic;
+import com.example.musicplace.playlist.layout.MyPlaylist;
+import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Map;
 
 public class mainDisplay extends AppCompatActivity {
     // 팔로워들의 플리 목록을 보여주는 페이지

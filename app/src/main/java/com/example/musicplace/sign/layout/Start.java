@@ -1,4 +1,4 @@
-package com.example.musicplace.sign;
+package com.example.musicplace.sign.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.google.android.gms.tasks.Task;
 import org.jetbrains.annotations.Nullable;
 
 
-public class start extends AppCompatActivity {
+public class Start extends AppCompatActivity {
 
     private Button join, google, login;
     private static final int RC_SIGN_IN = 100;
@@ -58,7 +58,7 @@ public class start extends AppCompatActivity {
         join = findViewById(R.id.join);
         join.setOnClickListener(view -> {
 
-            Intent intent = new Intent(start.this, join.class);
+            Intent intent = new Intent(Start.this, Join.class);
             startActivity(intent);
         });
 
@@ -66,7 +66,7 @@ public class start extends AppCompatActivity {
         // 로그인 화면 이동
         login = findViewById(R.id.login);
         login.setOnClickListener(view -> {
-            Intent intent = new Intent(start.this, login.class);
+            Intent intent = new Intent(Start.this, Login.class);
             startActivity(intent);
         });
 

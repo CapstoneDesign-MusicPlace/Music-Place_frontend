@@ -1,4 +1,4 @@
-package com.example.musicplace.sign;
+package com.example.musicplace.sign.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class login extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     private ImageButton back_login, start;
     private Button forgetId, forgetPw;
@@ -64,7 +64,7 @@ public class login extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {// 아이디 찾기 이동
-                Intent intent = new Intent(login.this, findId.class);
+                Intent intent = new Intent(Login.this, FindId.class);
                 startActivity(intent);
             }
         });
@@ -75,7 +75,7 @@ public class login extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {// 비밀번호 찾기 이동
-                Intent intent = new Intent(login.this, findPw.class);
+                Intent intent = new Intent(Login.this, FindPw.class);
                 startActivity(intent);
             }
         });
@@ -91,7 +91,7 @@ public class login extends AppCompatActivity {
                 String getPw = pw.getText().toString();
 
                 if (getId.isEmpty() || getPw.isEmpty()) {
-                    Toast.makeText(login.this, "ID와 비밀번호를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "ID와 비밀번호를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -104,11 +104,11 @@ public class login extends AppCompatActivity {
                             String token = response.body().getToken();
 
                             // 토큰 저장
-                            TokenManager tokenManager = new TokenManager(login.this);
+                            TokenManager tokenManager = new TokenManager(Login.this);
                             tokenManager.saveToken(token);
 
                             // 메인 화면으로 이동
-                            Intent intent = new Intent(login.this, mainDisplay.class);
+                            Intent intent = new Intent(Login.this, mainDisplay.class);
                             startActivity(intent);
                         } else {
                             System.out.println("로그인 실패: " + response.toString());

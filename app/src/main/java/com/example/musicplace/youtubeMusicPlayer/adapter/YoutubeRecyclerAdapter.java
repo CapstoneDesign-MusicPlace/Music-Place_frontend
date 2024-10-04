@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer;
+package com.example.musicplace.youtubeMusicPlayer.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
