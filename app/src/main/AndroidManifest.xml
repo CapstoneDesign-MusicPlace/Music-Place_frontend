@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".playlistInMusicPlayer"
+            android:name=".playlist.layout.playlistInMusicPlayer"
             android:exported="false" />
         <activity
             android:name=".youtubeMusicPlayer.layout.SelectPlaylist"

@@ -24,6 +24,7 @@ import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
 import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
+import com.example.musicplace.youtubeMusicPlayer.layout.MusicPlayer;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import retrofit2.Response;
 public class DetailedPlaylist extends AppCompatActivity {
     // MyPlaylist에서 플레이리스트 항목을 선택하면 넘어가는 상세 페이지
     private Intent intent;
-    private Button editButton, deleteButton;
+    private Button editButton, deleteButton, backButton;
     private TextView textViewTitle, publicAndPrivate, commentTextView;
     private UserApiInterface api;
     private RecyclerView musicRecyclerView, commentRecyclerView;
@@ -64,6 +65,16 @@ public class DetailedPlaylist extends AppCompatActivity {
         youtubeRecyclerAdapter = new YoutubeRecyclerAdapter(this, new ArrayList<>());
         musicRecyclerView.setAdapter(youtubeRecyclerAdapter);
         musicRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        youtubeRecyclerAdapter.setOnItemClickListener((position) -> {
+            // 클릭된 아이템의 YoutubeItem 데이터 가져오기
+            Intent intent = new Intent(getApplicationContext(), playlistInMusicPlayer.class);
+            intent.putExtra("VidioTitle", musicListDto.get(position).getVidioTitle());
+            intent.putExtra("VidioId", musicListDto.get(position).getVidioId());
+            intent.putExtra("VidioImage",musicListDto.get(position).getVidioImage());
+            startActivity(intent);
+        });
 
         // 댓글 리사이클뷰와 어뎁터 설정
         commentRecyclerView = findViewById(R.id.commentRecyclerView);
@@ -93,6 +104,17 @@ public class DetailedPlaylist extends AppCompatActivity {
         commentTextView.setText(comment);
 
 
+        backButton = (Button) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
+
         editButton = (Button) findViewById(R.id.editButton);
         editButton.setOnClickListener(new View.OnClickListener() {
 
@@ -108,6 +130,9 @@ public class DetailedPlaylist extends AppCompatActivity {
                 startActivityForResult(intent, 1002);
             }
         });
+
+
+
 
 
         deleteButton = (Button) findViewById(R.id.deleteButton);
@@ -163,7 +188,6 @@ public class DetailedPlaylist extends AppCompatActivity {
                     // ResponseMusicDto 리스트를 YoutubeItem 리스트로 변환
                     ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
                     for (ResponseMusicDto musicDto : musicListDto) {
-                        // 이미지 URL이 null일 경우 기본 이미지 설정
                         YoutubeItem youtubeItem = new YoutubeItem(musicDto.getVidioImage(), musicDto.getVidioTitle());
                         youtubeItems.add(youtubeItem);
                     }
