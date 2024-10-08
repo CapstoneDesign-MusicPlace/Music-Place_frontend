@@ -64,7 +64,7 @@ public class AddPlaylist extends AppCompatActivity {
         saveButton.setOnClickListener(view -> {
             String title = String.valueOf(editTextTitle.getText());
             String comment = String.valueOf(commentEditText.getText());
-            OnOff onOff;
+            OnOff onOff = null;
             int selectedId = radioGroup.getCheckedRadioButtonId();
             String image;
             if (selectedImageUri != null) {
@@ -73,13 +73,18 @@ public class AddPlaylist extends AppCompatActivity {
                 image = "android.resource://com.example.musicplace/drawable/playlistimg"; // 기본 이미지 URI (drawable 리소스 경로)
             }
             if (selectedId != -1) {
-                if(selectedId == 1) {
+                if (selectedId == R.id.publicRadioButton) {
                     onOff = OnOff.Public;
+                } else if (selectedId == R.id.privateRadioButton) {
+                    onOff = OnOff.Private;
                 }
-                else {onOff = OnOff.Private;}
             } else {
                 Toast.makeText(AddPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
                 return; // 선택되지 않은 경우 실행 중단
+            }
+            if(title == null){
+                Toast.makeText(AddPlaylist.this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                return;
             }
 
 

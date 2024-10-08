@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
 import com.example.musicplace.global.token.TokenManager;
-import com.example.musicplace.main.mainDisplay;
+import com.example.musicplace.main.layout.MainDisplay;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.sign.dto.LoginRequestDto;
@@ -45,9 +45,8 @@ public class Login extends AppCompatActivity {
         });
         // TokenManager 생성
         TokenManager tokenManager = new TokenManager(this);
-
-        // RetrofitClient에 TokenManager를 전달
         api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
+
 
         back_login = (ImageButton) findViewById(R.id.back_login);
         back_login.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +107,7 @@ public class Login extends AppCompatActivity {
                             tokenManager.saveToken(token);
 
                             // 메인 화면으로 이동
-                            Intent intent = new Intent(Login.this, mainDisplay.class);
+                            Intent intent = new Intent(Login.this, MainDisplay.class);
                             startActivity(intent);
                         } else {
                             System.out.println("로그인 실패: " + response.toString());

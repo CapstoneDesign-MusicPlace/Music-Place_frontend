@@ -107,7 +107,7 @@
         android:textColor="@color/text"/>
 
     <EditText
-        android:id="@+id/vidioTitle"
+        android:id="@+id/name"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

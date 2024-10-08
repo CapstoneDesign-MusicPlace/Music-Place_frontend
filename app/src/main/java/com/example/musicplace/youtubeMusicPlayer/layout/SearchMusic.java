@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
 
-import com.example.musicplace.follow.follow;
 import com.example.musicplace.global.token.TokenManager;
-import com.example.musicplace.main.mainDisplay;
+import com.example.musicplace.main.layout.MainDisplay;
+import com.example.musicplace.profile.layout.Profile;
 import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.VidioImage;
@@ -66,6 +66,9 @@ public class SearchMusic extends AppCompatActivity {
         mRecyclerAdapter = new YoutubeRecyclerAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        loadYoutubeData();
+
+
 
         // 음악 검색 버튼
         keywordEditText = findViewById(R.id.Search);
@@ -73,41 +76,7 @@ public class SearchMusic extends AppCompatActivity {
 
         searchButton.setOnClickListener(view -> {
             String keywordText = keywordEditText.getText().toString();
-
-            if (api != null) {
-                // API 호출
-                Call<List<YoutubeVidioDto>> call = api.youtubeSearch(keywordText);
-                call.enqueue(new Callback<List<YoutubeVidioDto>>() {
-                    @Override
-                    public void onResponse(Call<List<YoutubeVidioDto>> call, Response<List<YoutubeVidioDto>> response) {
-                        if (response.isSuccessful()) {
-                            ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
-                            videoDtoList = response.body();
-
-                            for (YoutubeVidioDto videoDto : videoDtoList) {
-                                VidioImage vidioImage = videoDto.getParsedVidioImage();
-                                if (vidioImage != null) {
-                                    youtubeItems.add(new YoutubeItem(vidioImage.getDefaultQuality().getUrl(), videoDto.getVidioTitle()));
-                                }
-                            }
-                            // 어댑터에 데이터 추가
-                            mRecyclerAdapter.setYoutubeItems(youtubeItems);
-                        } else {
-/*
-                            Toast.makeText(SearchMusic.this, "Response Error: " + response.toString(), Toast.LENGTH_SHORT).show();
-*/
-                            System.out.println(response.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<YoutubeVidioDto>> call, Throwable t) {
-                        Toast.makeText(SearchMusic.this, "API Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                Toast.makeText(SearchMusic.this, "API 객체가 초기화되지 않았습니다.", Toast.LENGTH_SHORT).show();
-            }
+            youtubeSearch(keywordText);
         });
 
         // RecyclerView 아이템 클릭 리스너
@@ -116,9 +85,17 @@ public class SearchMusic extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MusicPlayer.class);
             intent.putExtra("VidioTitle", videoDtoList.get(position).getVidioTitle());
             intent.putExtra("VidioId", videoDtoList.get(position).getVidioId());
-            intent.putExtra("VidioImage",videoDtoList.get(position).getParsedVidioImage().getDefaultQuality().getUrl().toString());
+
+            if (videoDtoList.get(position).getParsedVidioImage() != null &&
+                    videoDtoList.get(position).getParsedVidioImage().getDefaultQuality() != null) {
+                intent.putExtra("VidioImage", videoDtoList.get(position).getParsedVidioImage().getDefaultQuality().getUrl().toString());
+            } else {
+                intent.putExtra("VidioImage", videoDtoList.get(position).getVidioImage());
+            }
+
             startActivity(intent);
         });
+
 
 
         // 하단 네비게이션바
@@ -127,24 +104,84 @@ public class SearchMusic extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
 
             if(menuItem.getItemId() == R.id.home) {
-                intent = new Intent(SearchMusic.this, mainDisplay.class);
+                intent = new Intent(SearchMusic.this, MainDisplay.class);
                 startActivity(intent);
+                finish();
                 return true;
             } /*else if(menuItem.getItemId() == R.id.headset) {
                 intent = new Intent(SearchMusic.this, Map.class);
                 startActivity(intent);
+                finish();
                 return true;
-            }*/ else if(menuItem.getItemId() == R.id.person) {
-                intent = new Intent(SearchMusic.this, follow.class);
+            }*/ else if(menuItem.getItemId() == R.id.profile) {
+                intent = new Intent(SearchMusic.this, Profile.class);
                 startActivity(intent);
+                finish();
                 return true;
             } else if(menuItem.getItemId() == R.id.add) {
                 intent = new Intent(SearchMusic.this, MyPlaylist.class);
                 startActivity(intent);
+                finish();
                 return true;
             }
 
             return false;
         });
     }
+
+
+
+
+    private void loadYoutubeData() {
+        api.youtubeGetPlaylist().enqueue(new Callback<List<YoutubeVidioDto>>() {
+            @Override
+            public void onResponse(Call<List<YoutubeVidioDto>> call, Response<List<YoutubeVidioDto>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
+                    videoDtoList = response.body();
+
+                    for (YoutubeVidioDto videoDto : videoDtoList) {
+                       youtubeItems.add(new YoutubeItem(videoDto.getVidioImage(), videoDto.getVidioTitle()));
+                    }
+                    // 어댑터에 데이터 추가
+                    mRecyclerAdapter.setYoutubeItems(youtubeItems);
+                } else {
+                    System.out.println(response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<YoutubeVidioDto>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void youtubeSearch(String keywordText){
+        Call<List<YoutubeVidioDto>> call = api.youtubeSearch(keywordText);
+        call.enqueue(new Callback<List<YoutubeVidioDto>>() {
+            @Override
+            public void onResponse(Call<List<YoutubeVidioDto>> call, Response<List<YoutubeVidioDto>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
+                    videoDtoList = response.body();
+                    for (YoutubeVidioDto videoDto : videoDtoList) {
+                        VidioImage vidioImage = videoDto.getParsedVidioImage();
+                        if (vidioImage != null) {
+                            youtubeItems.add(new YoutubeItem(vidioImage.getDefaultQuality().getUrl(), videoDto.getVidioTitle()));
+                        }
+                    }
+                    mRecyclerAdapter.setYoutubeItems(youtubeItems);
+                } else {
+                    System.out.println(response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<YoutubeVidioDto>> call, Throwable t) {
+                Toast.makeText(SearchMusic.this, "API Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

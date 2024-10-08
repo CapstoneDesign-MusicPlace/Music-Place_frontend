@@ -1,10 +1,12 @@
-package com.example.musicplace.playlist.layout;
+package com.example.musicplace.main.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +22,13 @@ import com.example.musicplace.R;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
+import com.example.musicplace.main.dto.FollowSaveDto;
 import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
+import com.example.musicplace.playlist.dto.CommentSaveDto;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
+import com.example.musicplace.playlist.layout.playlistInMusicPlayer;
 import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
-import com.example.musicplace.youtubeMusicPlayer.layout.MusicPlayer;
 import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 
 import java.util.ArrayList;
@@ -34,22 +38,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailedPlaylist extends AppCompatActivity {
-    // MyPlaylist에서 플레이리스트 항목을 선택하면 넘어가는 상세 페이지
+public class ShowDetailedPublicPlaylist extends AppCompatActivity {
     private Intent intent;
-    private Button editButton, deleteButton, backButton;
-    private TextView textViewTitle, publicAndPrivate, commentTextView;
     private UserApiInterface api;
     private RecyclerView musicRecyclerView, commentRecyclerView;
     private YoutubeRecyclerAdapter youtubeRecyclerAdapter;
     private CommentRecyclerAdapter commentRecyclerAdapter;
     private List<ResponseMusicDto> musicListDto;
     private List<ResponseCommentDto> commentDtos;
+    private TextView textViewTitle, nicknameTextView, commentTextView;
+    private EditText commentEditText;
+    private Button saveButton, followButton, backButton;
+    private ImageView profileImageView;
+    private Long playlistId;
+    private String playlistTitle, nickname, imageUrl, comment, member_id;
+
+    private LinearLayout profileLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_detailed_playlist);
+        setContentView(R.layout.activity_show_detailed_public_playlist);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -66,13 +76,23 @@ public class DetailedPlaylist extends AppCompatActivity {
         musicRecyclerView.setAdapter(youtubeRecyclerAdapter);
         musicRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Intent로 전달받은 데이터 수신
+        intent = getIntent();
+        if (intent != null) {
+            playlistId = intent.getLongExtra("playlistId", 1L);
+            playlistTitle = intent.getStringExtra("playlistTitle");
+            nickname = intent.getStringExtra("nickname");
+            imageUrl = intent.getStringExtra("imageUrl");
+            comment = intent.getStringExtra("comment");
+            member_id = intent.getStringExtra("member_id");
+        }
 
         youtubeRecyclerAdapter.setOnItemClickListener((position) -> {
             // 클릭된 아이템의 YoutubeItem 데이터 가져오기
             Intent intent = new Intent(getApplicationContext(), playlistInMusicPlayer.class);
             intent.putExtra("VidioTitle", musicListDto.get(position).getVidioTitle());
             intent.putExtra("VidioId", musicListDto.get(position).getVidioId());
-            intent.putExtra("VidioImage",musicListDto.get(position).getVidioImage());
+            intent.putExtra("VidioImage", musicListDto.get(position).getVidioImage());
             startActivity(intent);
         });
 
@@ -82,101 +102,61 @@ public class DetailedPlaylist extends AppCompatActivity {
         commentRecyclerView.setAdapter(commentRecyclerAdapter);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        // Intent로 전달받은 데이터 수신
-        intent = getIntent();
-        Long playlistId = intent.getLongExtra("playlistId",1L);
-        String playlistTitle = intent.getStringExtra("playlistTitle");
-        String nickname = intent.getStringExtra("nickname");
-        String imageUrl = intent.getStringExtra("imageUrl");
-        String onOff =intent.getStringExtra("onoff");
-        String comment = intent.getStringExtra("comment");
-
         loadPlaylistMusicData(playlistId);
         loadPlaylistCommentData(playlistId);
 
         textViewTitle = findViewById(R.id.textViewTitle);
-        publicAndPrivate = findViewById(R.id.publicAndPrivate);
+        nicknameTextView = findViewById(R.id.nicknameTextView);
         commentTextView = findViewById(R.id.commentTextView);
+        profileImageView = findViewById(R.id.profileImageView);
+        commentEditText = findViewById(R.id.commentEditText);
 
         textViewTitle.setText(playlistTitle);
-        publicAndPrivate.setText(onOff);
+        nicknameTextView.setText(nickname);
         commentTextView.setText(comment);
 
-
-        backButton = (Button) findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                finish();
+        // imageUrl을 이용해 이미지 설정
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            try {
+                profileImageView.setImageResource(Integer.parseInt(imageUrl));
+            } catch (NumberFormatException e) {
+                // 기본 이미지를 설정
+                profileImageView.setImageResource(android.R.drawable.ic_menu_gallery);
             }
-        });
-
-
-
-        editButton = (Button) findViewById(R.id.editButton);
-        editButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(DetailedPlaylist.this, EditPlaylist.class);
-                intent.putExtra("playlistId", playlistId);
-                intent.putExtra("playlistTitle", playlistTitle);
-                intent.putExtra("nickname", nickname);
-                intent.putExtra("imageUrl", imageUrl);
-                intent.putExtra("onoff", onOff);
-                intent.putExtra("comment",comment);
-                startActivityForResult(intent, 1002);
-            }
-        });
-
-
-
-
-
-        deleteButton = (Button) findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                api.PLDelete(playlistId).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            // 삭제 성공 시 처리
-                            Toast.makeText(DetailedPlaylist.this,  playlistTitle +"이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                            setResult(RESULT_OK);
-                            finish();  // 액티비티 종료
-                        } else {
-                            // 실패 시 처리
-                            Toast.makeText(DetailedPlaylist.this, playlistTitle +"이 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        // 요청 실패 시 처리
-                        Toast.makeText(DetailedPlaylist.this, "서버 요청에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                        Log.e("API_ERROR", t.getMessage());
-                    }
-                });
-            }
-        });
-
-
-    }
-
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1002 && resultCode == RESULT_OK) {
-            setResult(RESULT_OK);  // MyPlaylist에 결과를 전달
-            finish();  // DetailedPlaylist 종료
+        } else {
+            // 기본 이미지를 설정
+            profileImageView.setImageResource(android.R.drawable.ic_menu_gallery);
         }
-    }
 
+        saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(view -> {
+            // 댓글 저장 버튼
+            String userComment = String.valueOf(commentEditText.getText());
+            CommentSaveDto commentSaveDto = new CommentSaveDto(nickname, userComment);
+            saveComment(playlistId, commentSaveDto);
+            loadPlaylistCommentData(playlistId);
+        });
+
+        followButton = findViewById(R.id.followButton);
+        followButton.setOnClickListener(view -> {
+            // 구독 버튼
+            FollowSave(new FollowSaveDto(member_id));
+        });
+
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(view -> finish());
+
+
+        profileLayout = findViewById(R.id.profileLayout);
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("프로필 클릭");
+
+            }
+        });
+    }
 
     private void loadPlaylistMusicData(Long PLId) {
         api.MusicFindAll(PLId).enqueue(new Callback<List<ResponseMusicDto>>() {
@@ -195,13 +175,13 @@ public class DetailedPlaylist extends AppCompatActivity {
                     // 어댑터에 데이터를 설정하고 갱신
                     youtubeRecyclerAdapter.setYoutubeItems(youtubeItems);
                 } else {
-                    Toast.makeText(DetailedPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowDetailedPublicPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ResponseMusicDto>> call, Throwable t) {
-                Toast.makeText(DetailedPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowDetailedPublicPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -212,31 +192,64 @@ public class DetailedPlaylist extends AppCompatActivity {
             public void onResponse(Call<List<ResponseCommentDto>> call, Response<List<ResponseCommentDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     commentDtos = response.body();
-
-
                     ArrayList<ResponseCommentDto> commentItems = new ArrayList<>();
                     for (ResponseCommentDto commentDto : commentDtos) {
-                        ResponseCommentDto responseCommentDto = new ResponseCommentDto(commentDto.getComment_id(),commentDto.getNickName(), commentDto.getUserComment());
-                        System.out.println(commentDto.getComment_id()+commentDto.getNickName()+ commentDto.getUserComment());
+                        ResponseCommentDto responseCommentDto = new ResponseCommentDto(
+                                commentDto.getComment_id(),
+                                commentDto.getNickName(),
+                                commentDto.getUserComment()
+                        );
                         commentItems.add(responseCommentDto);
                     }
-
-
                     // 어댑터에 데이터를 설정하고 갱신
                     commentRecyclerAdapter.setCommentItems(commentItems);
                 } else {
-                    Toast.makeText(DetailedPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowDetailedPublicPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ResponseCommentDto>> call, Throwable t) {
-                Toast.makeText(DetailedPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowDetailedPublicPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private void saveComment(Long plId, CommentSaveDto commentSaveDto) {
+        api.CommentSave(plId, commentSaveDto).enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ShowDetailedPublicPlaylist.this, "댓글이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    System.out.println("댓글 저장 성공");
+                } else {
+                    System.out.println("댓글 저장 실패");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                Toast.makeText(ShowDetailedPublicPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    private void FollowSave(FollowSaveDto followSaveDto) {
+        api.FollowSave(followSaveDto).enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ShowDetailedPublicPlaylist.this, "팔로우 되었습니다..", Toast.LENGTH_SHORT).show();
+                    System.out.println("팔로우 성공");
+                } else {
+                    System.out.println("팔로우 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                Toast.makeText(ShowDetailedPublicPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
-

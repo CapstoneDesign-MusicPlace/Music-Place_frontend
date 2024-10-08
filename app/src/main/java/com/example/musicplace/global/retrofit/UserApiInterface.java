@@ -1,5 +1,7 @@
 package com.example.musicplace.global.retrofit;
 
+import com.example.musicplace.main.dto.FollowResponseDto;
+import com.example.musicplace.main.dto.FollowSaveDto;
 import com.example.musicplace.playlist.dto.CommentSaveDto;
 import com.example.musicplace.playlist.dto.MusicSaveDto;
 import com.example.musicplace.playlist.dto.PLSaveDto;
@@ -7,6 +9,8 @@ import com.example.musicplace.playlist.dto.PLUpdateDto;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
+import com.example.musicplace.profile.dto.SignInGetUserDataDto;
+import com.example.musicplace.profile.dto.SignInUpdateDto;
 import com.example.musicplace.sign.dto.LoginRequestDto;
 import com.example.musicplace.sign.dto.LoginResponseDto;
 import com.example.musicplace.sign.dto.SignInSaveDto;
@@ -29,7 +33,7 @@ public interface UserApiInterface {
 
 
     // 회원가입
-    @POST("sign_in")
+    @POST("sign_in/save")
     Call<SignInSaveDto> saveMember(@Body SignInSaveDto data);
 
     // 자체 로그인
@@ -38,15 +42,35 @@ public interface UserApiInterface {
 
     // 로그아웃
     @POST("auth/logout")
-    Call<Void> logout(@Body SignInSaveDto data);
+    Call<Void> logout();
 
     // 동일 아이디 확인
     @GET("sign_in/{member_id}/sameid")
     Call<Boolean> SignInCheckSameId(@Path("member_id") String member_id);
 
+    // 유저 정보 조회
+    @GET("sign_in/getuser")
+    Call<SignInGetUserDataDto> SignInGetUserData();
+
+    // 유저 정보 삭제
+    @DELETE("sign_in/delete")
+    Call<Void> SignInDelete();
+
+    // 유저 정보 업데이트
+    @PATCH("sign_in/update")
+    Call<Void> SignInUpdate(@Body SignInUpdateDto signInUpdateDto);
+
+
+
+
+
     // 유튜브 검색
     @GET("youtube/{keyword}")
     Call<List<YoutubeVidioDto>> youtubeSearch(@Path("keyword") String keyword);
+
+    // 유트브 이번주 베스트 음악
+    @GET("youtube/playlist")
+    Call<List<YoutubeVidioDto>> youtubeGetPlaylist();
 
 
 
@@ -71,6 +95,10 @@ public interface UserApiInterface {
     @GET("playList/public")
     Call<List<ResponsePLDto>> PLFindPublic();
 
+    // 플리 개수 조회
+    @GET("playList/count")
+    Call<Long> PLCount();
+
 
 
 
@@ -88,6 +116,7 @@ public interface UserApiInterface {
 
 
 
+
     // 플리 - 댓글 저장
     @POST("playList/comment/{PLId}")
     Call<Long> CommentSave(@Path("PLId") Long PLId, @Body CommentSaveDto commentSaveDto);
@@ -97,4 +126,24 @@ public interface UserApiInterface {
     // 플리 - 댓글 조회
     @GET("playList/comment/{PLId}")
     Call<List<ResponseCommentDto>> CommentFindAll(@Path("PLId") Long PLId);
+
+
+
+
+    // 팔로우 저장
+    @POST("follow")
+    Call<Long> FollowSave(@Body FollowSaveDto followSaveDto);
+
+    // 팔로우 삭제
+    @DELETE("follow/{follow_id}")
+    Call<Long> FollowDelete(@Path("follow_id") Long follow_id, @Body FollowSaveDto followSaveDto);
+
+    // 팔로우 조회
+    @GET("follow")
+    Call<List<FollowResponseDto>> FollowFindAll();
+
+    // 팔로우 개수 조회
+    @GET("follow/count")
+    Call<Long> FollowCount();
+
 }

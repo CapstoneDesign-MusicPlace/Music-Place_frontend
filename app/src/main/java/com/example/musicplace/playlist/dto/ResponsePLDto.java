@@ -20,14 +20,18 @@ public class ResponsePLDto {
     @SerializedName("nickname")
     private String nickname;
 
+    @SerializedName("member_id")
+    private String member_id;
 
-    public ResponsePLDto(Long playlist_id, String nickname, String PLTitle, String cover_img, OnOff onOff, String comment) {
+
+    public ResponsePLDto(Long playlist_id, String nickname, String PLTitle, String cover_img, OnOff onOff, String comment, String member_id) {
         this.playlist_id = playlist_id;
         this.PLTitle = PLTitle;
         this.cover_img = cover_img;
         this.onOff = onOff;
         this.comment = comment;
         this.nickname = nickname;
+        this.member_id = member_id;
     }
 
     public Long getPlaylist_id() {
@@ -50,5 +54,9 @@ public class ResponsePLDto {
 
     public String getComment() {
         return comment;
+    }
+
+    public String getMember_id() {
+        return member_id;
     }
 }

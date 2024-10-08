@@ -57,9 +57,9 @@ public class Start extends AppCompatActivity {
         // 회원가입 화면 이동
         join = findViewById(R.id.join);
         join.setOnClickListener(view -> {
-
             Intent intent = new Intent(Start.this, Join.class);
             startActivity(intent);
+
         });
 
 

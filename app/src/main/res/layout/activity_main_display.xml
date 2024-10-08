@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".main.mainDisplay">
+    tools:context=".main.layout.MainDisplay">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,12 +34,15 @@
 
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:layout_width="380dp"
+        android:background="@color/recycleViewBackground"
+        android:layout_marginBottom="10dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_menu"

@@ -18,8 +18,9 @@ public class AuthInterceptor implements Interceptor {
         Request originalRequest = chain.request();
 
         // 특정 경로에는 토큰을 추가하지 않음
-        if (originalRequest.url().encodedPath().contains("/sign_in") ||
-                originalRequest.url().encodedPath().contains("/auth/login")) {
+        if (originalRequest.url().encodedPath().contains("/sign_in/save") ||
+                originalRequest.url().encodedPath().contains("/auth/login") ||
+                originalRequest.url().encodedPath().contains("/sign_in/{member_id}/sameid")) {
             return chain.proceed(originalRequest);
         }
 

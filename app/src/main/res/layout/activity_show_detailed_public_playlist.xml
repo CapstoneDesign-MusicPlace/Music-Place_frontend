@@ -5,10 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".main.layout.ShowDetailedPublicPlaylist"
     android:background="@color/background"
-    android:orientation="vertical"
-    tools:context=".playlist.layout.DetailedPlaylist">
-
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -24,7 +23,6 @@
             android:layout_height="20dp"
             android:layout_marginLeft="30dp"
             android:layout_gravity="bottom"
-
             app:srcCompat="@drawable/list_image" />
 
         <TextView
@@ -36,16 +34,6 @@
             android:textColor="@color/text"
             android:layout_marginLeft="15dp"
             android:textSize="25dp" />
-
-        <TextView
-            android:id="@+id/publicAndPrivate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="공개/비공개"
-            android:layout_gravity="bottom"
-            android:textColor="@color/white"
-            android:layout_marginLeft="22dp"/>
-
 
     </LinearLayout>
 
@@ -64,11 +52,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
+                android:gravity="left"
                 >
 
+                <LinearLayout
+                    android:id="@+id/profileLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileImageView"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@android:drawable/ic_menu_gallery" />
+
+                    <TextView
+                        android:id="@+id/nicknameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="@color/text"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/followButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="팔로우"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    />
             </LinearLayout>
+
+
             <TextView
                 android:id="@+id/commentTextView"
                 android:layout_width="380dp"
@@ -90,18 +117,45 @@
                 android:layout_gravity="center"
                 android:layout_width="380dp"
                 android:background="@color/recycleViewBackground"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="30dp"
                 android:layout_height="550dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            >
+
+            <EditText
+                android:id="@+id/commentEditText"
+                android:layout_width="270dp"
+                android:layout_height="match_parent"
+                android:background="@color/recycleViewBackground"
+                android:ems="10"
+                android:hint="댓글을 작성해 주세요"
+                android:inputType="text"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="저장" />
+        </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentRecyclerView"
                 android:layout_width="380dp"
                 android:layout_height="550dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
                 android:layout_marginBottom="12dp"
                 android:background="@color/recycleViewBackground"
                 android:layout_marginLeft="15dp"
@@ -123,29 +177,12 @@
                     android:layout_marginRight="10dp"
                     />
 
-                <Button
-                    android:id="@+id/editButton"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="수정"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"/>
-
-                <Button
-                    android:id="@+id/deleteButton"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="삭제"
-                    android:layout_marginLeft="10dp"/>
             </LinearLayout>
+
 
         </LinearLayout>
 
 
     </ScrollView>
-
-
-
-
 
 </LinearLayout>
