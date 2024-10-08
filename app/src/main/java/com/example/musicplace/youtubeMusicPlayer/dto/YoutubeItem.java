@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer.youtubeDto;
+package com.example.musicplace.youtubeMusicPlayer.dto;
 
 public class YoutubeItem {
     private String vidioTitle;

@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplace.R;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
 
 import java.util.ArrayList;
+
 
 public class EditMusicRecyclerAdapter extends RecyclerView.Adapter<EditMusicRecyclerAdapter.ViewHolder> {
 

@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer.youtubeDto;
+package com.example.musicplace.youtubeMusicPlayer.dto;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -3,7 +3,6 @@ package com.example.musicplace.follow.layout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,18 +21,8 @@ import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.follow.dto.FollowResponseDto;
-import com.example.musicplace.main.layout.ShowDetailedPublicPlaylist;
-import com.example.musicplace.playlist.adapter.PlaylistRecyclerAdapter;
-import com.example.musicplace.playlist.dto.ResponseMusicDto;
-import com.example.musicplace.playlist.dto.ResponsePLDto;
-import com.example.musicplace.playlist.layout.DetailedPlaylist;
-import com.example.musicplace.playlist.layout.MyPlaylist;
-import com.example.musicplace.profile.dto.SignInUpdateDto;
-import com.example.musicplace.youtubeMusicPlayer.layout.MusicPlayer;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
+import com.example.musicplace.follow.layout.FollowDetailed;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
@@ -24,8 +25,7 @@ import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
 import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
-import com.example.musicplace.youtubeMusicPlayer.layout.MusicPlayer;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +81,15 @@ public class DetailedPlaylist extends AppCompatActivity {
         commentRecyclerAdapter = new CommentRecyclerAdapter(this, new ArrayList<>());
         commentRecyclerView.setAdapter(commentRecyclerAdapter);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        /*commentRecyclerView.setOnClickListener((position) -> {
+            // 클릭된 아이템의 YoutubeItem 데이터 가져오기
+            Intent commentIntent = new Intent(getApplicationContext(), FollowDetailed.class);
+            commentIntent.putExtra("memberId", commentDtos.get(position));
+            commentIntent.putExtra("image", commentDtos.get(position).getVidioId());
+            commentIntent.putExtra("nickname",commentDtos.get(position).getVidioImage());
+            startActivity(commentIntent);
+        });*/
 
 
         // Intent로 전달받은 데이터 수신

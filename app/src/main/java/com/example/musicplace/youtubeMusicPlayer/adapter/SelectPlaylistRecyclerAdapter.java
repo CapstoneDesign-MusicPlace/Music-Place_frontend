@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplace.R;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.LoadPlaylistDto;
+import com.example.musicplace.youtubeMusicPlayer.dto.LoadPlaylistDto;
 
 import java.util.ArrayList;
 

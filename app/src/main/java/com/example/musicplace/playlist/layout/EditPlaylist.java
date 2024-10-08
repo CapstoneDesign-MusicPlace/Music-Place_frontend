@@ -28,7 +28,8 @@ import com.example.musicplace.playlist.adapter.EditMusicRecyclerAdapter;
 import com.example.musicplace.playlist.dto.OnOff;
 import com.example.musicplace.playlist.dto.PLUpdateDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
+
 
 import java.util.ArrayList;
 import java.util.List;

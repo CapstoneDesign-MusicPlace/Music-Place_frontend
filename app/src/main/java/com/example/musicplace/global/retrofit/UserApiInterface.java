@@ -14,7 +14,7 @@ import com.example.musicplace.profile.dto.SignInUpdateDto;
 import com.example.musicplace.sign.dto.LoginRequestDto;
 import com.example.musicplace.sign.dto.LoginResponseDto;
 import com.example.musicplace.sign.dto.SignInSaveDto;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
 
 import java.util.List;
 
@@ -114,8 +114,8 @@ public interface UserApiInterface {
     Call<Long> MusicSave(@Path("PLId") Long PLId, @Body MusicSaveDto musicSaveDto);
 
     // 플리 - 노래 삭제
-    @DELETE("playList/music/{PLId}/{MusicId}")
-    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Path("MusicId") Long MusicId);
+    @DELETE("playList/music/{PLId}")
+    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Body List<Long> MusicIds);
 
     // 플리 - 노래 목록 조회
     @GET("playList/music/{PLId}")

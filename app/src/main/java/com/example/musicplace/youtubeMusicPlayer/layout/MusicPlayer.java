@@ -11,7 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.musicplace.R;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
 
 import java.util.ArrayList;
 

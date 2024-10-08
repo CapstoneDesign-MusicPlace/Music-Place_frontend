@@ -2,7 +2,6 @@ package com.example.musicplace.youtubeMusicPlayer.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,7 +18,7 @@ import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.playlist.dto.MusicSaveDto;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.LoadPlaylistDto;
+import com.example.musicplace.youtubeMusicPlayer.dto.LoadPlaylistDto;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.youtubeMusicPlayer.adapter.SelectPlaylistRecyclerAdapter;
 
