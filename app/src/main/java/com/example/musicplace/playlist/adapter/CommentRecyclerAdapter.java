@@ -62,4 +62,9 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
         this.commentItems = commentItems;
         notifyDataSetChanged();  // 데이터 변경 후 UI 갱신
     }
+
+    public void addComment(ResponseCommentDto comment) {
+        this.commentItems.add(comment); // 댓글 목록에 추가
+        notifyItemInserted(commentItems.size() - 1); // 새로운 아이템 추가를 알림
+    }
 }

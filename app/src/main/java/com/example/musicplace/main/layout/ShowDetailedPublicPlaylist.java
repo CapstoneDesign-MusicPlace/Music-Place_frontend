@@ -19,10 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
+import com.example.musicplace.follow.layout.FollowDetailed;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
-import com.example.musicplace.main.dto.FollowSaveDto;
+import com.example.musicplace.follow.dto.FollowSaveDto;
 import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
 import com.example.musicplace.playlist.dto.CommentSaveDto;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
@@ -132,15 +133,19 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
         saveButton.setOnClickListener(view -> {
             // 댓글 저장 버튼
             String userComment = String.valueOf(commentEditText.getText());
+            if(userComment.isEmpty()){
+                Toast.makeText(ShowDetailedPublicPlaylist.this, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             CommentSaveDto commentSaveDto = new CommentSaveDto(nickname, userComment);
             saveComment(playlistId, commentSaveDto);
-            loadPlaylistCommentData(playlistId);
+            commentEditText.setText("");
         });
 
         followButton = findViewById(R.id.followButton);
         followButton.setOnClickListener(view -> {
             // 구독 버튼
-            FollowSave(new FollowSaveDto(member_id));
+            FollowSave(new FollowSaveDto(member_id, imageUrl, nickname));
         });
 
         backButton = findViewById(R.id.backButton);
@@ -152,8 +157,12 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
         profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("프로필 클릭");
-
+                // 다른 사용자의 프로필을 볼 수 있는 화면으로 이동
+                Intent intent = new Intent(getApplicationContext(), FollowDetailed.class);
+                intent.putExtra("memberId", member_id);
+                intent.putExtra("image", imageUrl);
+                intent.putExtra("nickname", nickname);
+                startActivity(intent);
             }
         });
     }
@@ -221,7 +230,16 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
             public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(ShowDetailedPublicPlaylist.this, "댓글이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    System.out.println("댓글 저장 성공");
+
+                    // 저장된 댓글을 즉시 리사이클러뷰에 추가
+                    ResponseCommentDto newComment = new ResponseCommentDto(
+                            response.body(), // 서버로부터 받은 comment_id 사용
+                            commentSaveDto.getNickName(),
+                            commentSaveDto.getComment()
+                    );
+
+                    commentRecyclerAdapter.addComment(newComment);
+                    commentEditText.setText(""); // 입력란 초기화
                 } else {
                     System.out.println("댓글 저장 실패");
                 }
@@ -233,6 +251,7 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
             }
         });
     }
+
 
     private void FollowSave(FollowSaveDto followSaveDto) {
         api.FollowSave(followSaveDto).enqueue(new Callback<Long>() {

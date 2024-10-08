@@ -38,7 +38,7 @@ public class MainDisplay extends AppCompatActivity {
     private Intent intent;
     private PlaylistRecyclerAdapter playlistRecyclerAdapter;
     private UserApiInterface api;
-    private List<ResponsePLDto> musicListDto;
+    private List<ResponsePLDto> responsePLDtos;
 
 
     @Override
@@ -65,7 +65,7 @@ public class MainDisplay extends AppCompatActivity {
 
         // 아이템 클릭 이벤트 처리
         playlistRecyclerAdapter.setOnItemClickListener(position -> {
-            ResponsePLDto selectedItem = musicListDto.get(position);
+            ResponsePLDto selectedItem = responsePLDtos.get(position);
             Intent intent = new Intent(MainDisplay.this, ShowDetailedPublicPlaylist.class);
             // 선택된 아이템의 정보를 Intent로 전달
             intent.putExtra("playlistId", selectedItem.getPlaylist_id());
@@ -116,9 +116,9 @@ public class MainDisplay extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ResponsePLDto>> call, Response<List<ResponsePLDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    musicListDto = response.body();
+                    responsePLDtos = response.body();
 
-                    ArrayList<PlaylistDto> playlistDtoList = (ArrayList<PlaylistDto>) musicListDto.stream()
+                    ArrayList<PlaylistDto> playlistDtoList = (ArrayList<PlaylistDto>) responsePLDtos.stream()
                             .map(pl -> new PlaylistDto(pl.getPLTitle(), pl.getNickname(), pl.getCover_img()))
                             .collect(Collectors.toList());
 

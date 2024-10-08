@@ -1,7 +1,7 @@
 package com.example.musicplace.global.retrofit;
 
-import com.example.musicplace.main.dto.FollowResponseDto;
-import com.example.musicplace.main.dto.FollowSaveDto;
+import com.example.musicplace.follow.dto.FollowResponseDto;
+import com.example.musicplace.follow.dto.FollowSaveDto;
 import com.example.musicplace.playlist.dto.CommentSaveDto;
 import com.example.musicplace.playlist.dto.MusicSaveDto;
 import com.example.musicplace.playlist.dto.PLSaveDto;
@@ -99,6 +99,13 @@ public interface UserApiInterface {
     @GET("playList/count")
     Call<Long> PLCount();
 
+    // 다른 사용자 플리 개수 조회
+    @GET("playList/otherCount/{otherMemberId}")
+    Call<Long> otherPLCount(@Path("otherMemberId") String otherMemberId);
+
+    // 다른 사용자의 공개 플리 조회
+    @GET("playList/other/{otherMemberId}")
+    Call<List<ResponsePLDto>> getOtherUserPL(@Path("otherMemberId") String otherMemberId);
 
 
 
@@ -145,5 +152,10 @@ public interface UserApiInterface {
     // 팔로우 개수 조회
     @GET("follow/count")
     Call<Long> FollowCount();
+
+    // 다른 사용자 팔로우 개수 조회
+    @GET("follow/otherCount/{otherMemberId}")
+    Call<Long> otherFollowCount(@Path("otherMemberId") String otherMemberId);
+
 
 }
