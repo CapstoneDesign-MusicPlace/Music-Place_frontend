@@ -2,9 +2,16 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'com.example.musicplace'
     compileSdk 34
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId "com.example.musicplace"
@@ -14,6 +21,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // buildConfigField로 서버 클라이언트 ID 값을 설정
+        buildConfigField "String", "serverClientId", properties['serverClientId']
+
     }
 
     buildTypes {
@@ -38,6 +49,9 @@ dependencies {
 
     // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
+
+    // Google login 
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
     implementation libs.appcompat
     implementation libs.material

@@ -27,16 +27,16 @@
         android:title=" " />
 
     <item
-        android:id="@+id/person"
+        android:id="@+id/add"
         app:showAsAction="always"
-        android:icon="@drawable/menu_person"
+        android:icon="@drawable/menu_add"
         android:enabled="true"
         android:title=" " />
 
     <item
-        android:id="@+id/add"
+        android:id="@+id/profile"
         app:showAsAction="always"
-        android:icon="@drawable/menu_add"
+        android:icon="@drawable/profile"
         android:enabled="true"
         android:title=" " />
 
