@@ -25,10 +25,12 @@ import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.playlist.adapter.EditMusicRecyclerAdapter;
+import com.example.musicplace.playlist.dto.EditMusicDto;
 import com.example.musicplace.playlist.dto.OnOff;
 import com.example.musicplace.playlist.dto.PLUpdateDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
-import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
+
+
 
 
 import java.util.ArrayList;
@@ -137,8 +139,15 @@ public class EditPlaylist extends AppCompatActivity {
                     Toast.makeText(EditPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
                     return; // 선택되지 않은 경우 실행 중단
                 }
+
+                List<Long> selectedMusicIds = editMusicRecyclerAdapter.getSelectedMusicIds();
+                deleteSelectedMusic(playlistId, selectedMusicIds);
+
                 PLUpdateDto plUpdateDto = new PLUpdateDto(title, onOff, image, comment);
                 updatePlaylistData(playlistId, plUpdateDto);
+
+
+
             }
         });
 
@@ -199,15 +208,15 @@ public class EditPlaylist extends AppCompatActivity {
                     musicListDto = response.body();
 
                     // ResponseMusicDto 리스트를 YoutubeItem 리스트로 변환
-                    ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
+                    ArrayList<EditMusicDto> musicDtoArrayList = new ArrayList<>();
                     for (ResponseMusicDto musicDto : musicListDto) {
                         // 이미지 URL이 null일 경우 기본 이미지 설정
-                        YoutubeItem youtubeItem = new YoutubeItem(musicDto.getVidioImage(), musicDto.getVidioTitle());
-                        youtubeItems.add(youtubeItem);
+                        EditMusicDto MusicItem = new EditMusicDto(musicDto.getMusic_id(), musicDto.getVidioTitle(), musicDto.getVidioImage());
+                        musicDtoArrayList.add(MusicItem);
                     }
 
                     // 어댑터에 데이터를 설정하고 갱신
-                    editMusicRecyclerAdapter.setYoutubeItems(youtubeItems);
+                    editMusicRecyclerAdapter.setEditMusicItems(musicDtoArrayList);
                 } else {
                     Toast.makeText(EditPlaylist.this, "플레이리스트의 음악 데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -215,6 +224,37 @@ public class EditPlaylist extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ResponseMusicDto>> call, Throwable t) {
+                Toast.makeText(EditPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteSelectedMusic(Long playlistId, List<Long> selectedMusicIds) {
+        api.MusicDelete(playlistId, selectedMusicIds).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful() && response.body() != null && response.body()) {
+                    System.out.println("선택한 음악이 삭제되었습니다.");
+                    setResult(RESULT_OK);
+                    finish(); // 액티비티 종료
+                } else {
+                    try {
+                        if (response.errorBody() != null) {
+                            // 에러 메시지를 출력
+                            String errorMessage = response.errorBody().string();  // 에러 내용 가져오기
+                            System.out.println("===========response.message()==============" + response.message() + "======errorBody======" + errorMessage);
+                        } else {
+                            System.out.println("===========response.message()==============" + response.message());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();  // 에러 발생 시 예외 출력
+                    }
+                    Toast.makeText(EditPlaylist.this, "음악 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
                 Toast.makeText(EditPlaylist.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             }
         });

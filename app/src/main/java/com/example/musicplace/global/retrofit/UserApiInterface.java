@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -114,8 +115,9 @@ public interface UserApiInterface {
     Call<Long> MusicSave(@Path("PLId") Long PLId, @Body MusicSaveDto musicSaveDto);
 
     // 플리 - 노래 삭제
-    @DELETE("playList/music/{PLId}")
-    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Body List<Long> MusicIds);
+
+    @POST("playList/music/{PLId}/delete")
+    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Body List<Long> deleteMusics);
 
     // 플리 - 노래 목록 조회
     @GET("playList/music/{PLId}")
