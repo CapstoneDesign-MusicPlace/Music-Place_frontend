@@ -103,6 +103,18 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
         commentRecyclerView.setAdapter(commentRecyclerAdapter);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+        commentRecyclerAdapter.setOnItemClickListener((position) -> {
+            Intent followIntent = new Intent(ShowDetailedPublicPlaylist.this, FollowDetailed.class);
+            followIntent.putExtra("memberId", commentDtos.get(position).getMemberId());
+            followIntent.putExtra("image", commentDtos.get(position).getProfile_img_url());
+            followIntent.putExtra("nickname", commentDtos.get(position).getNickName());
+            startActivity(followIntent); // 화면 전환
+            });
+
+
+
         loadPlaylistMusicData(playlistId);
         loadPlaylistCommentData(playlistId);
 
@@ -204,9 +216,10 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
                     ArrayList<ResponseCommentDto> commentItems = new ArrayList<>();
                     for (ResponseCommentDto commentDto : commentDtos) {
                         ResponseCommentDto responseCommentDto = new ResponseCommentDto(
-                                commentDto.getComment_id(),
+                                commentDto.getMemberId(),
                                 commentDto.getNickName(),
-                                commentDto.getUserComment()
+                                commentDto.getUserComment(),
+                                commentDto.getProfile_img_url()
                         );
                         commentItems.add(responseCommentDto);
                     }
@@ -233,9 +246,10 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
 
                     // 저장된 댓글을 즉시 리사이클러뷰에 추가
                     ResponseCommentDto newComment = new ResponseCommentDto(
-                            response.body(), // 서버로부터 받은 comment_id 사용
+                            member_id,
                             commentSaveDto.getNickName(),
-                            commentSaveDto.getComment()
+                            commentSaveDto.getComment(),
+                            imageUrl
                     );
 
                     commentRecyclerAdapter.addComment(newComment);

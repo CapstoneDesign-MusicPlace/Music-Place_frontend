@@ -20,6 +20,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
     private ArrayList<ResponseCommentDto> commentItems;
     private OnItemClickListener onItemClickListener; // 클릭 리스너 추가
 
+
     public CommentRecyclerAdapter(Context context, ArrayList<ResponseCommentDto> commentItems) {
         this.context = context;
         this.commentItems = commentItems;
@@ -85,4 +86,6 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
+
+
 }
