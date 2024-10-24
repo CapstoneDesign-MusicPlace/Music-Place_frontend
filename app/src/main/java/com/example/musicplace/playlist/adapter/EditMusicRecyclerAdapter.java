@@ -13,43 +13,50 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplace.R;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
+import com.example.musicplace.playlist.dto.EditMusicDto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EditMusicRecyclerAdapter extends RecyclerView.Adapter<EditMusicRecyclerAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<YoutubeItem> youtubeItems;
+    private ArrayList<EditMusicDto> editMusicItems;
     private OnItemClickListener onItemClickListener;
+    private List<Long> selectedMusicIds = new ArrayList<>(); // 선택된 music_id를 저장할 리스트
 
-    public EditMusicRecyclerAdapter(Context context, ArrayList<YoutubeItem> youtubeItems) {
+    public EditMusicRecyclerAdapter(Context context, ArrayList<EditMusicDto> editMusicItems) {
         this.context = context;
-        this.youtubeItems = youtubeItems;
+        this.editMusicItems = editMusicItems;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // 아이템 레이아웃을 inflate
         View view = LayoutInflater.from(context).inflate(R.layout.item_check_youtube, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // 데이터 설정
-        YoutubeItem youtubeItem = youtubeItems.get(position);
-        holder.titleTextView.setText(youtubeItem.getVidioTitle());
+        EditMusicDto editMusicItem = editMusicItems.get(position);
+        holder.titleTextView.setText(editMusicItem.getVidioTitle());
 
-        // 이미지 URL 로드 (Glide 사용)
+        // Glide를 사용하여 이미지 로드
         Glide.with(context)
-                .load(youtubeItem.getImageUrl())
-                .placeholder(R.drawable.playlistimg)
+                .load(editMusicItem.getImageUrl())
+                .placeholder(R.drawable.playlistimg) // 기본 이미지 설정
                 .into(holder.thumbnailImageView);
 
-        // 체크박스 클릭 리스너 설정
+        // 체크박스 상태 설정
+        holder.checkBox.setChecked(selectedMusicIds.contains(editMusicItem.getMusic_id()));
+
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectedMusicIds.add(editMusicItem.getMusic_id()); // 체크되면 리스트에 추가
+            } else {
+                selectedMusicIds.remove(editMusicItem.getMusic_id()); // 체크 해제되면 리스트에서 제거
+            }
             if (onItemClickListener != null) {
                 onItemClickListener.onItemCheck(position, isChecked);
             }
@@ -58,10 +65,9 @@ public class EditMusicRecyclerAdapter extends RecyclerView.Adapter<EditMusicRecy
 
     @Override
     public int getItemCount() {
-        return youtubeItems.size();
+        return editMusicItems.size();
     }
 
-    // 뷰홀더 클래스
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnailImageView;
         TextView titleTextView;
@@ -75,18 +81,19 @@ public class EditMusicRecyclerAdapter extends RecyclerView.Adapter<EditMusicRecy
         }
     }
 
-    // 어댑터 데이터 갱신 메서드
-    public void setYoutubeItems(ArrayList<YoutubeItem> youtubeItems) {
-        this.youtubeItems = youtubeItems;
-        notifyDataSetChanged();  // 데이터 변경 후 UI 갱신
+    public List<Long> getSelectedMusicIds() {
+        return selectedMusicIds; // 선택된 music_id 리스트를 반환
     }
 
-    // 아이템 체크 상태를 리스너로 전달하는 메서드
+    public void setEditMusicItems(ArrayList<EditMusicDto> editMusicItems) {
+        this.editMusicItems = editMusicItems;
+        notifyDataSetChanged();
+    }
+
     public interface OnItemClickListener {
         void onItemCheck(int position, boolean isChecked);
     }
 
-    // 아이템 클릭 리스너 설정 메서드
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }

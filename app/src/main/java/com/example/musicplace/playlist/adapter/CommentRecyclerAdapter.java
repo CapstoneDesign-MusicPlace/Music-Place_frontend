@@ -18,6 +18,8 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
 
     private Context context;
     private ArrayList<ResponseCommentDto> commentItems;
+    private OnItemClickListener onItemClickListener; // 클릭 리스너 추가
+
 
     public CommentRecyclerAdapter(Context context, ArrayList<ResponseCommentDto> commentItems) {
         this.context = context;
@@ -38,6 +40,13 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
         ResponseCommentDto commentItem = commentItems.get(position);
         holder.nameTextView.setText(commentItem.getNickName());
         holder.commentTextView.setText(commentItem.getUserComment());
+
+        // 아이템 클릭 이벤트 처리
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(position); // 클릭된 아이템의 포지션 전달
+            }
+        });
     }
 
     @Override
@@ -62,4 +71,21 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
         this.commentItems = commentItems;
         notifyDataSetChanged();  // 데이터 변경 후 UI 갱신
     }
+
+    public void addComment(ResponseCommentDto comment) {
+        this.commentItems.add(comment); // 댓글 목록에 추가
+        notifyItemInserted(commentItems.size() - 1); // 새로운 아이템 추가를 알림
+    }
+
+    // 아이템 클릭 리스너 인터페이스
+    public interface OnItemClickListener {
+        void onItemClick(int position); // 클릭 시 호출될 메서드
+    }
+
+    // 아이템 클릭 리스너 설정 메서드
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+
 }

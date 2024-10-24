@@ -16,11 +16,12 @@ public class AuthInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
+        String path = originalRequest.url().encodedPath();
 
         // 특정 경로에는 토큰을 추가하지 않음
-        if (originalRequest.url().encodedPath().contains("/sign_in/save") ||
-                originalRequest.url().encodedPath().contains("/auth/login") ||
-                originalRequest.url().encodedPath().contains("/sign_in/{member_id}/sameid")) {
+        if (path.contains("/sign_in/save") ||
+                path.contains("/auth/login") ||
+                path.matches("/sign_in/[^/]+/sameid")) {  // 정규 표현식으로 member_id 처리
             return chain.proceed(originalRequest);
         }
 

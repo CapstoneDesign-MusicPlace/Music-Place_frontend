@@ -19,17 +19,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
+import com.example.musicplace.follow.layout.FollowDetailed;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
-import com.example.musicplace.main.dto.FollowSaveDto;
+import com.example.musicplace.follow.dto.FollowSaveDto;
 import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
 import com.example.musicplace.playlist.dto.CommentSaveDto;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
 import com.example.musicplace.playlist.layout.playlistInMusicPlayer;
 import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,18 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
         commentRecyclerView.setAdapter(commentRecyclerAdapter);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+        commentRecyclerAdapter.setOnItemClickListener((position) -> {
+            Intent followIntent = new Intent(ShowDetailedPublicPlaylist.this, FollowDetailed.class);
+            followIntent.putExtra("memberId", commentDtos.get(position).getMemberId());
+            followIntent.putExtra("image", commentDtos.get(position).getProfile_img_url());
+            followIntent.putExtra("nickname", commentDtos.get(position).getNickName());
+            startActivity(followIntent); // 화면 전환
+            });
+
+
+
         loadPlaylistMusicData(playlistId);
         loadPlaylistCommentData(playlistId);
 
@@ -132,15 +145,19 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
         saveButton.setOnClickListener(view -> {
             // 댓글 저장 버튼
             String userComment = String.valueOf(commentEditText.getText());
+            if(userComment.isEmpty()){
+                Toast.makeText(ShowDetailedPublicPlaylist.this, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             CommentSaveDto commentSaveDto = new CommentSaveDto(nickname, userComment);
             saveComment(playlistId, commentSaveDto);
-            loadPlaylistCommentData(playlistId);
+            commentEditText.setText("");
         });
 
         followButton = findViewById(R.id.followButton);
         followButton.setOnClickListener(view -> {
             // 구독 버튼
-            FollowSave(new FollowSaveDto(member_id));
+            FollowSave(new FollowSaveDto(member_id, imageUrl, nickname));
         });
 
         backButton = findViewById(R.id.backButton);
@@ -152,8 +169,12 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
         profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("프로필 클릭");
-
+                // 다른 사용자의 프로필을 볼 수 있는 화면으로 이동
+                Intent intent = new Intent(getApplicationContext(), FollowDetailed.class);
+                intent.putExtra("memberId", member_id);
+                intent.putExtra("image", imageUrl);
+                intent.putExtra("nickname", nickname);
+                startActivity(intent);
             }
         });
     }
@@ -195,9 +216,10 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
                     ArrayList<ResponseCommentDto> commentItems = new ArrayList<>();
                     for (ResponseCommentDto commentDto : commentDtos) {
                         ResponseCommentDto responseCommentDto = new ResponseCommentDto(
-                                commentDto.getComment_id(),
+                                commentDto.getMemberId(),
                                 commentDto.getNickName(),
-                                commentDto.getUserComment()
+                                commentDto.getUserComment(),
+                                commentDto.getProfile_img_url()
                         );
                         commentItems.add(responseCommentDto);
                     }
@@ -221,7 +243,17 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
             public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(ShowDetailedPublicPlaylist.this, "댓글이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    System.out.println("댓글 저장 성공");
+
+                    // 저장된 댓글을 즉시 리사이클러뷰에 추가
+                    ResponseCommentDto newComment = new ResponseCommentDto(
+                            member_id,
+                            commentSaveDto.getNickName(),
+                            commentSaveDto.getComment(),
+                            imageUrl
+                    );
+
+                    commentRecyclerAdapter.addComment(newComment);
+                    commentEditText.setText(""); // 입력란 초기화
                 } else {
                     System.out.println("댓글 저장 실패");
                 }
@@ -233,6 +265,7 @@ public class ShowDetailedPublicPlaylist extends AppCompatActivity {
             }
         });
     }
+
 
     private void FollowSave(FollowSaveDto followSaveDto) {
         api.FollowSave(followSaveDto).enqueue(new Callback<Long>() {

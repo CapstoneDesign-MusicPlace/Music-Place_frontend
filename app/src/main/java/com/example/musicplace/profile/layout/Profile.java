@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musicplace.R;
+import com.example.musicplace.follow.layout.FollowList;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
@@ -39,7 +40,7 @@ public class Profile extends AppCompatActivity {
     private TextView userNicknameTextView;
     private TextView playlistCountTextView;
     private TextView followCountTextView;
-    private LinearLayout playlistLinearLayout, followLinearLayout;
+    private LinearLayout followLinearLayout;
     private Button profileButton, secessionButton, logOutButton;
     private BottomNavigationView bottomNavigationView;
     private String name, email, nickname, profile_img_url;
@@ -83,7 +84,9 @@ public class Profile extends AppCompatActivity {
             // 팔로워 상세 리스트 이동
             @Override
             public void onClick(View view) {
-
+                intent = new Intent(Profile.this, FollowList.class);
+                intent.putExtra("nickname", nickname);
+                startActivity(intent);
             }
         });
 

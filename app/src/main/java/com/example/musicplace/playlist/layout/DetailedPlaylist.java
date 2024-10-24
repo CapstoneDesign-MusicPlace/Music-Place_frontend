@@ -17,15 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
+import com.example.musicplace.follow.layout.FollowDetailed;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
+import com.example.musicplace.main.layout.ShowDetailedPublicPlaylist;
 import com.example.musicplace.playlist.adapter.CommentRecyclerAdapter;
 import com.example.musicplace.playlist.dto.ResponseCommentDto;
 import com.example.musicplace.playlist.dto.ResponseMusicDto;
 import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
-import com.example.musicplace.youtubeMusicPlayer.layout.MusicPlayer;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,14 @@ public class DetailedPlaylist extends AppCompatActivity {
         commentRecyclerAdapter = new CommentRecyclerAdapter(this, new ArrayList<>());
         commentRecyclerView.setAdapter(commentRecyclerAdapter);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        commentRecyclerAdapter.setOnItemClickListener((position) -> {
+            Intent followIntent = new Intent(DetailedPlaylist.this, FollowDetailed.class);
+            followIntent.putExtra("memberId", commentDtos.get(position).getMemberId());
+            followIntent.putExtra("image", commentDtos.get(position).getProfile_img_url());
+            followIntent.putExtra("nickname", commentDtos.get(position).getNickName());
+            startActivity(followIntent); // 화면 전환
+        });
 
 
         // Intent로 전달받은 데이터 수신
@@ -216,8 +225,7 @@ public class DetailedPlaylist extends AppCompatActivity {
 
                     ArrayList<ResponseCommentDto> commentItems = new ArrayList<>();
                     for (ResponseCommentDto commentDto : commentDtos) {
-                        ResponseCommentDto responseCommentDto = new ResponseCommentDto(commentDto.getComment_id(),commentDto.getNickName(), commentDto.getUserComment());
-                        System.out.println(commentDto.getComment_id()+commentDto.getNickName()+ commentDto.getUserComment());
+                        ResponseCommentDto responseCommentDto = new ResponseCommentDto(commentDto.getMemberId(),commentDto.getNickName(), commentDto.getUserComment(), commentDto.getProfile_img_url());
                         commentItems.add(responseCommentDto);
                     }
 

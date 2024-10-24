@@ -1,7 +1,9 @@
 package com.example.musicplace.profile.layout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,7 +33,7 @@ import retrofit2.Response;
 public class EditProfile extends AppCompatActivity {
     private Intent intent;
     private UserApiInterface api;
-    private Button saveButton, cancelButton;
+    private Button saveButton, cancelButton, changeImagButton;
     private ImageView editImageView;
     private EditText idEditText, pwEditText, emailEditText, nickNameEditText, nameEditText;
     private String name, email, nickname, profile_img_url;
@@ -52,7 +58,7 @@ public class EditProfile extends AppCompatActivity {
         nickNameEditText = (EditText) findViewById(R.id.nickNameEditText);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         editImageView = (ImageView) findViewById(R.id.editImageView);
-
+        changeImagButton = (Button) findViewById(R.id.changeImagButton);
 
 
         emailEditText.setText(email);
@@ -90,6 +96,34 @@ public class EditProfile extends AppCompatActivity {
                 finish();
             }
         });
+
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == RESULT_OK) {
+                            Intent intent = result.getData();
+                            Uri uri = intent.getData();
+                        }
+                    }
+                }
+        );
+
+        changeImagButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {//갤러리 호출
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                activityResultLauncher.launch(intent);
+            }
+
+        }) ;
+
+
+
+
 
     }
 

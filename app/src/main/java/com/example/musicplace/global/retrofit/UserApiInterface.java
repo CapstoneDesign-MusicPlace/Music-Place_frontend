@@ -1,7 +1,7 @@
 package com.example.musicplace.global.retrofit;
 
-import com.example.musicplace.main.dto.FollowResponseDto;
-import com.example.musicplace.main.dto.FollowSaveDto;
+import com.example.musicplace.follow.dto.FollowResponseDto;
+import com.example.musicplace.follow.dto.FollowSaveDto;
 import com.example.musicplace.playlist.dto.CommentSaveDto;
 import com.example.musicplace.playlist.dto.MusicSaveDto;
 import com.example.musicplace.playlist.dto.PLSaveDto;
@@ -14,7 +14,7 @@ import com.example.musicplace.profile.dto.SignInUpdateDto;
 import com.example.musicplace.sign.dto.LoginRequestDto;
 import com.example.musicplace.sign.dto.LoginResponseDto;
 import com.example.musicplace.sign.dto.SignInSaveDto;
-import com.example.musicplace.youtubeMusicPlayer.youtubeDto.YoutubeVidioDto;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -99,6 +100,13 @@ public interface UserApiInterface {
     @GET("playList/count")
     Call<Long> PLCount();
 
+    // 다른 사용자 플리 개수 조회
+    @GET("playList/otherCount/{otherMemberId}")
+    Call<Long> otherPLCount(@Path("otherMemberId") String otherMemberId);
+
+    // 다른 사용자의 공개 플리 조회
+    @GET("playList/other/{otherMemberId}")
+    Call<List<ResponsePLDto>> getOtherUserPL(@Path("otherMemberId") String otherMemberId);
 
 
 
@@ -107,8 +115,9 @@ public interface UserApiInterface {
     Call<Long> MusicSave(@Path("PLId") Long PLId, @Body MusicSaveDto musicSaveDto);
 
     // 플리 - 노래 삭제
-    @DELETE("playList/music/{PLId}/{MusicId}")
-    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Path("MusicId") Long MusicId);
+
+    @POST("playList/music/{PLId}/delete")
+    Call<Boolean> MusicDelete(@Path("PLId") Long PLId, @Body List<Long> deleteMusics);
 
     // 플리 - 노래 목록 조회
     @GET("playList/music/{PLId}")
@@ -145,5 +154,10 @@ public interface UserApiInterface {
     // 팔로우 개수 조회
     @GET("follow/count")
     Call<Long> FollowCount();
+
+    // 다른 사용자 팔로우 개수 조회
+    @GET("follow/otherCount/{otherMemberId}")
+    Call<Long> otherFollowCount(@Path("otherMemberId") String otherMemberId);
+
 
 }
