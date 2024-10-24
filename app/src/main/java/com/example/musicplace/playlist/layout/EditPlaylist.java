@@ -122,7 +122,7 @@ public class EditPlaylist extends AppCompatActivity {
             public void onClick(View view) {
                 String title = String.valueOf(editTextTitle.getText());
                 String comment = String.valueOf(editTextText.getText());
-                OnOff onOff;
+                OnOff onOff = null;
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 String image;
                 if (selectedImageUri != null) {
@@ -131,10 +131,11 @@ public class EditPlaylist extends AppCompatActivity {
                     image = "android.resource://com.example.musicplace/drawable/playlistimg"; // 기본 이미지 URI (drawable 리소스 경로)
                 }
                 if (selectedId != -1) {
-                    if(selectedId == 1) {
+                    if (selectedId == R.id.publicRadioButton) {
                         onOff = OnOff.Public;
+                    } else if (selectedId == R.id.privateRadioButton) {
+                        onOff = OnOff.Private;
                     }
-                    else {onOff = OnOff.Private;}
                 } else {
                     Toast.makeText(EditPlaylist.this, "공개/비공개 상태를 선택하세요.", Toast.LENGTH_SHORT).show();
                     return; // 선택되지 않은 경우 실행 중단
