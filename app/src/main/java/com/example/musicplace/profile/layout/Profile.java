@@ -24,6 +24,7 @@ import com.example.musicplace.main.layout.MainDisplay;
 import com.example.musicplace.playlist.layout.MyPlaylist;
 import com.example.musicplace.profile.dto.SignInGetUserDataDto;
 import com.example.musicplace.sign.layout.Start;
+import com.example.musicplace.streaming.layout.StreamingMain;
 import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -132,12 +133,12 @@ public class Profile extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            } /*else if(menuItem.getItemId() == R.id.headset) {
-                intent = new Intent(mainDisplay.this, Map.class);
+            } else if(menuItem.getItemId() == R.id.headset) {
+                intent = new Intent(Profile.this, StreamingMain.class);
                 startActivity(intent);
                 finish();
                 return true;
-            } */else if(menuItem.getItemId() == R.id.home) {
+            } else if(menuItem.getItemId() == R.id.home) {
                 intent = new Intent(Profile.this, MainDisplay.class);
                 startActivity(intent);
                 finish();

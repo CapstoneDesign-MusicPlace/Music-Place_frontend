@@ -21,11 +21,13 @@ import com.example.musicplace.playlist.dto.PlaylistDto;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.playlist.layout.MyPlaylist;
 import com.example.musicplace.profile.layout.Profile;
+import com.example.musicplace.streaming.layout.StreamingMain;
 import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -88,12 +90,12 @@ public class MainDisplay extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            } /*else if(menuItem.getItemId() == R.id.headset) {
-                intent = new Intent(mainDisplay.this, Map.class);
+            } else if(menuItem.getItemId() == R.id.headset) {
+                intent = new Intent(MainDisplay.this, StreamingMain.class);
                 startActivity(intent);
                 finish();
                 return true;
-            } */else if(menuItem.getItemId() == R.id.profile) {
+            } else if(menuItem.getItemId() == R.id.profile) {
                 intent = new Intent(MainDisplay.this, Profile.class);
                 startActivity(intent);
                 finish();

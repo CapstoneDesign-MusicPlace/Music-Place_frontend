@@ -21,6 +21,7 @@ import com.example.musicplace.main.layout.MainDisplay;
 import com.example.musicplace.playlist.adapter.PlaylistRecyclerAdapter;
 import com.example.musicplace.playlist.dto.PlaylistDto;
 import com.example.musicplace.profile.layout.Profile;
+import com.example.musicplace.streaming.layout.StreamingMain;
 import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
 import com.example.musicplace.playlist.dto.ResponsePLDto;
 import com.example.musicplace.global.retrofit.UserApiInterface;
@@ -108,12 +109,12 @@ public class MyPlaylist extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            } /*else if(menuItem.getItemId() == R.id.headset) {
-                intent = new Intent(MyPlaylist.this, SearchMusic.class);
+            } else if(menuItem.getItemId() == R.id.headset) {
+                intent = new Intent(MyPlaylist.this, StreamingMain.class);
                 startActivity(intent);
                 finish();
                 return true;
-            }*/ else if(menuItem.getItemId() == R.id.profile) {
+            } else if(menuItem.getItemId() == R.id.profile) {
                 intent = new Intent(MyPlaylist.this, Profile.class);
                 startActivity(intent);
                 finish();

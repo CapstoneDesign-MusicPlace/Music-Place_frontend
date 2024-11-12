@@ -14,8 +14,10 @@ import com.example.musicplace.profile.dto.SignInUpdateDto;
 import com.example.musicplace.sign.dto.LoginRequestDto;
 import com.example.musicplace.sign.dto.LoginResponseDto;
 import com.example.musicplace.sign.dto.SignInSaveDto;
+import com.example.musicplace.streaming.dto.RoomDto;
 import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
 
+import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,10 +31,8 @@ import retrofit2.http.Path;
 
 public interface UserApiInterface {
 
-    @POST("/auth/google")
-    Call<LoginResponseDto> getOAuth2Jwt(@Body String idToken);
 
-
+    // [유저]
     // 회원가입
     @POST("sign_in/save")
     Call<SignInSaveDto> saveMember(@Body SignInSaveDto data);
@@ -64,7 +64,7 @@ public interface UserApiInterface {
 
 
 
-
+    // [유튜브]
     // 유튜브 검색
     @GET("youtube/{keyword}")
     Call<List<YoutubeVidioDto>> youtubeSearch(@Path("keyword") String keyword);
@@ -75,7 +75,7 @@ public interface UserApiInterface {
 
 
 
-
+    // [플리]
     // 플리 등록
     @POST("playList")
     Call<Long> PLSave(@Body PLSaveDto plSaveDto);
@@ -110,6 +110,7 @@ public interface UserApiInterface {
 
 
 
+    // [플리 노래]
     // 플리 - 노래 저장
     @POST("playList/music/{PLId}")
     Call<Long> MusicSave(@Path("PLId") Long PLId, @Body MusicSaveDto musicSaveDto);
@@ -125,7 +126,7 @@ public interface UserApiInterface {
 
 
 
-
+    // [플리 댓글]
     // 플리 - 댓글 저장
     @POST("playList/comment/{PLId}")
     Call<Long> CommentSave(@Path("PLId") Long PLId, @Body CommentSaveDto commentSaveDto);
@@ -138,7 +139,7 @@ public interface UserApiInterface {
 
 
 
-
+    // [팔로우]
     // 팔로우 저장
     @POST("follow")
     Call<Long> FollowSave(@Body FollowSaveDto followSaveDto);
@@ -158,6 +159,26 @@ public interface UserApiInterface {
     // 다른 사용자 팔로우 개수 조회
     @GET("follow/otherCount/{otherMemberId}")
     Call<Long> otherFollowCount(@Path("otherMemberId") String otherMemberId);
+
+
+
+
+    // [스트리밍]
+    // 스트리밍 - 조회
+    @GET("streaming/rooms")
+    Call<List<RoomDto>> getChatRooms();
+
+    // 스트리밍 - 생성
+    @POST("streaming/rooms")
+    Call<String> createChatRoom(@Body RoomDto roomDto);
+
+    // 스트리밍 - 삭제
+    @DELETE("streaming/rooms/{roomId}")
+    Call<RoomDto> deleteChatRoom(@Path("roomId") String roomId);
+
+    // 스트리밍 - 수정
+    @PATCH("streaming/rooms/{roomId}")
+    Call<RoomDto> patchChatRoom(@Path("roomId") String roomId, @Body RoomDto roomDto);
 
 
 }
