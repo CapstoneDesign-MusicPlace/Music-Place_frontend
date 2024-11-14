@@ -92,8 +92,17 @@ public class StreamingSearchYoutube extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            finish();  // StreamingSearchYoutube 종료
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            // StreamingMusicPlayer로부터 VidioId 수신
+            String vidioId = data.getStringExtra("VidioId");
+
+            // VidioId를 결과로 설정하여 StreamingHostRoom으로 전달
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("VidioId", vidioId);
+            setResult(RESULT_OK, resultIntent);
+
+            // StreamingSearchYoutube 종료
+            finish();
         }
     }
 

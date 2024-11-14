@@ -67,16 +67,13 @@ public class StreamingMusicPlayer extends AppCompatActivity {
             }
         });
 
+
         add = (Button) findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent streamingIntent = new Intent(StreamingMusicPlayer.this, StreamingHostRoom.class);
-                streamingIntent.putExtra("VidioId", vidioId);
-                setResult(RESULT_OK);  // 결과 설정
-                startActivity(streamingIntent);
-                finish();
-            }
+        add.setOnClickListener(view -> {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("VidioId", vidioId);
+            setResult(RESULT_OK, resultIntent);  // VidioId를 결과로 설정
+            finish();  // StreamingMusicPlayer 종료
         });
     }
 }

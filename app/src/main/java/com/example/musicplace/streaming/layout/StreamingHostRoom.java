@@ -20,6 +20,8 @@ import com.example.musicplace.R;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
+import com.example.musicplace.playlist.layout.DetailedPlaylist;
+import com.example.musicplace.playlist.layout.MyPlaylist;
 import com.example.musicplace.streaming.WebSocketClient;
 import com.example.musicplace.streaming.adapter.ChatingAdapter;
 import com.example.musicplace.streaming.adapter.ViewType;
@@ -63,7 +65,15 @@ public class StreamingHostRoom extends AppCompatActivity {
             return insets;
         });
 
-
+        /*// Intent에서 데이터 수신
+        intent = getIntent();
+        if (intent != null) {
+            streamingTitle = intent.getStringExtra("roomTitle");
+            roomId = intent.getStringExtra("roomId");
+            roomComment = intent.getStringExtra("roomComment");
+            vidioId = intent.getStringExtra("vidioId"); // 필요 시 vidioId도 수신
+            Log.d(TAG, "Intent extras received1: roomTitle=" + streamingTitle + ", roomId=" + roomId + ", roomComment=" + roomComment);
+        }*/
 
         TokenManager tokenManager = new TokenManager(this);
         api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
@@ -117,8 +127,13 @@ public class StreamingHostRoom extends AppCompatActivity {
             streamingTitle = intent.getStringExtra("roomTitle");
             roomId = intent.getStringExtra("roomId");
             roomComment = intent.getStringExtra("roomComment");
-            vidioId = intent.getStringExtra("VidioId");
-            Log.d(TAG, "Intent extras retrieved: roomTitle=" + streamingTitle + ", roomId=" + roomId);
+            Log.d(TAG, "Intent extras retrieved1 : roomTitle=" + streamingTitle + ", roomComment=" + roomComment);
+        }
+        Intent VidioIdIntent = new Intent();
+        VidioIdIntent = getIntent();
+        if (VidioIdIntent != null) {
+            vidioId = VidioIdIntent.getStringExtra("VidioId");
+            Log.d(TAG, "Intent extras retrieved2 : " + ", VidioId=" + vidioId );
         }
 
         webView = findViewById(R.id.webView);
@@ -163,9 +178,8 @@ public class StreamingHostRoom extends AppCompatActivity {
         changeYoutubeButton = findViewById(R.id.changeYoutubeButton);
         changeYoutubeButton.setOnClickListener(view -> {
             Log.i(TAG, "Change YouTube button clicked");
-            intent = new Intent(StreamingHostRoom.this, StreamingSearchYoutube.class);
-            startActivity(intent);
-
+            Intent intent = new Intent(StreamingHostRoom.this, StreamingSearchYoutube.class);
+            startActivityForResult(intent, 1);  // 요청 코드 1 사용
         });
 
         patchButton = findViewById(R.id.patchButton);
@@ -191,8 +205,8 @@ public class StreamingHostRoom extends AppCompatActivity {
     }
 
     private void sendYoutubeTalkMessage() {
-        Log.d(TAG, "Sending Youtube message");
-        sendYoutubeMessage("TALK");
+        Log.d(TAG, "Sending Youtube talk message = " + roomId);
+        sendYoutubeMessage("TALK", vidioId);
     }
 
     private void sendExitMessage() {
@@ -223,23 +237,23 @@ public class StreamingHostRoom extends AppCompatActivity {
         }
     }
 
-    private void sendYoutubeMessage(String type) {
+    private void sendYoutubeMessage(String type, String vidioId) {
         try {
-            ReqestChatDto requestChatDto = new ReqestChatDto(null, roomId, vidioId);
             JSONObject json = new JSONObject();
             json.put("type", type);
 
             JSONObject payload = new JSONObject();
-            payload.put("chatRoomId", requestChatDto.getChatRoomId());
+            payload.put("chatRoomId", roomId);
+            Log.i(TAG,"chatRoomId = " +  roomId);
             if (vidioId != null) {
-                payload.put("vidioId", requestChatDto.getVidioId());
+                payload.put("vidioId", vidioId);
             }
             json.put("payload", payload);
 
-            Log.d(TAG, "Sending WebSocket message: " + json.toString());
+            Log.d(TAG, "Sending WebSocket message with video ID: " + json.toString());
             webSocketClient.sendMessage(json.toString());
         } catch (Exception e) {
-            Log.e(TAG, "Error sending message", e);
+            Log.e(TAG, "Error sending YouTube talk message", e);
         }
     }
 
@@ -302,5 +316,35 @@ public class StreamingHostRoom extends AppCompatActivity {
             sendExitMessage();
             webSocketClient.close();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            // StreamingSearchYoutube에서 VidioId를 받아옴
+            String vidioId = data.getStringExtra("VidioId");
+            if (vidioId != null && !vidioId.isEmpty()) {
+                this.vidioId = vidioId;
+                String videoUrl = "https://www.youtube.com/embed/" + vidioId;
+                webView.loadUrl(videoUrl);
+                Log.d(TAG, "Updated WebView with new video URL: " + videoUrl);
+                sendYoutubeTalkMessage();
+            }
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.i(TAG, "Back button pressed");
+
+        // endButton 클릭 시 동작과 동일한 작업 수행
+        sendExitMessage();
+        deleteChatRoom(roomId);
+
+        // StreamingMain으로 이동
+        Intent intent = new Intent(StreamingHostRoom.this, StreamingMain.class);
+        startActivity(intent);
+        finish();  // 현재 액티비티 종료
     }
 }
