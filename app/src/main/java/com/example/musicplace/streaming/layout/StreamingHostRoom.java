@@ -130,6 +130,16 @@ public class StreamingHostRoom extends AppCompatActivity {
             Log.d(TAG, "Intent extras retrieved: roomTitle=" + streamingTitle + ", roomId=" + roomId);
         }
 
+        webView = findViewById(R.id.webView);
+        if (vidioId != null && !vidioId.isEmpty()) {
+            String videoUrl = "https://www.youtube.com/embed/" + vidioId;
+            webView.getSettings().setJavaScriptEnabled(true);  // 자바스크립트 활성화
+            webView.loadUrl(videoUrl);
+            Log.d(TAG, "Loading YouTube video URL: " + videoUrl);
+        } else {
+            Log.w(TAG, "vidioId is null or empty, cannot load video");
+        }
+
         RecyclerView chatRecyclerView = findViewById(R.id.chatRecyclerView);
         chatingAdapter = new ChatingAdapter(chatList);
         chatRecyclerView.setAdapter(chatingAdapter);
@@ -163,6 +173,7 @@ public class StreamingHostRoom extends AppCompatActivity {
             Log.i(TAG, "Change YouTube button clicked");
             intent = new Intent(StreamingHostRoom.this, StreamingSearchYoutube.class);
             startActivity(intent);
+
         });
 
         patchButton = findViewById(R.id.patchButton);
