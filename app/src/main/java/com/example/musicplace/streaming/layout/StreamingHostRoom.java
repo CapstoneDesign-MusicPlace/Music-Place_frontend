@@ -63,15 +63,6 @@ public class StreamingHostRoom extends AppCompatActivity {
             return insets;
         });
 
-        // Intent에서 데이터 수신
-        intent = getIntent();
-        if (intent != null) {
-            streamingTitle = intent.getStringExtra("roomTitle");
-            roomId = intent.getStringExtra("roomId");
-            roomComment = intent.getStringExtra("roomComment");
-            vidioId = intent.getStringExtra("vidioId"); // 필요 시 vidioId도 수신
-            Log.d(TAG, "Intent extras received: roomTitle=" + streamingTitle + ", roomId=" + roomId + ", roomComment=" + roomComment);
-        }
 
 
         TokenManager tokenManager = new TokenManager(this);
@@ -136,6 +127,7 @@ public class StreamingHostRoom extends AppCompatActivity {
             webView.getSettings().setJavaScriptEnabled(true);  // 자바스크립트 활성화
             webView.loadUrl(videoUrl);
             Log.d(TAG, "Loading YouTube video URL: " + videoUrl);
+            sendYoutubeTalkMessage();
         } else {
             Log.w(TAG, "vidioId is null or empty, cannot load video");
         }
@@ -192,9 +184,15 @@ public class StreamingHostRoom extends AppCompatActivity {
         sendMessage("ENTER", null);
     }
 
+
     private void sendTalkMessage(String message) {
         Log.d(TAG, "Sending talk message");
         sendMessage("TALK", message);
+    }
+
+    private void sendYoutubeTalkMessage() {
+        Log.d(TAG, "Sending Youtube message");
+        sendYoutubeMessage("TALK");
     }
 
     private void sendExitMessage() {
@@ -204,7 +202,7 @@ public class StreamingHostRoom extends AppCompatActivity {
 
     private void sendMessage(String type, String message) {
         try {
-            ReqestChatDto requestChatDto = new ReqestChatDto(message, roomId, vidioId);
+            ReqestChatDto requestChatDto = new ReqestChatDto(message, roomId, null);
             JSONObject json = new JSONObject();
             json.put("type", type);
 
@@ -213,6 +211,26 @@ public class StreamingHostRoom extends AppCompatActivity {
             if (message != null) {
                 payload.put("message", requestChatDto.getMessage());
             }
+            if (vidioId != null) {
+                payload.put("vidioId", requestChatDto.getVidioId());
+            }
+            json.put("payload", payload);
+
+            Log.d(TAG, "Sending WebSocket message: " + json.toString());
+            webSocketClient.sendMessage(json.toString());
+        } catch (Exception e) {
+            Log.e(TAG, "Error sending message", e);
+        }
+    }
+
+    private void sendYoutubeMessage(String type) {
+        try {
+            ReqestChatDto requestChatDto = new ReqestChatDto(null, roomId, vidioId);
+            JSONObject json = new JSONObject();
+            json.put("type", type);
+
+            JSONObject payload = new JSONObject();
+            payload.put("chatRoomId", requestChatDto.getChatRoomId());
             if (vidioId != null) {
                 payload.put("vidioId", requestChatDto.getVidioId());
             }
