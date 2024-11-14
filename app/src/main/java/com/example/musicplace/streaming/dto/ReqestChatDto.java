@@ -1,11 +1,11 @@
 package com.example.musicplace.streaming.dto;
 
-public class ChatDto {
+public class ReqestChatDto {
     private String message;
     private String chatRoomId;
     private String vidioId;
 
-    public ChatDto(String message, String chatRoomId, String vidioId) {
+    public ReqestChatDto(String message, String chatRoomId, String vidioId) {
         this.message = message;
         this.chatRoomId = chatRoomId;
         this.vidioId = vidioId;

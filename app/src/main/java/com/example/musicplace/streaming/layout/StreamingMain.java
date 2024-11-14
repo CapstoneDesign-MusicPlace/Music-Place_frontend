@@ -125,15 +125,17 @@ public class StreamingMain extends AppCompatActivity {
         api.getChatRooms().enqueue(new Callback<List<RoomDto>>() {
             @Override
             public void onResponse(Call<List<RoomDto>> call, Response<List<RoomDto>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<RoomDto> roomItems = new ArrayList<>();
+                if (response.isSuccessful() && response.body() != null) {
                     roomDtoList = response.body();
 
+                    ArrayList<RoomDto> roomItems = new ArrayList<>();
                     for (RoomDto roomDto : roomDtoList) {
-                        roomItems.add(new RoomDto(roomDto.getChatRoomId(), roomDto.getRoomTitle(),roomDto.getRoomComment(),roomDto.getUsername()));
+                        roomItems.add(new RoomDto(roomDto.getChatRoomId(), roomDto.getRoomTitle(), roomDto.getRoomComment(), roomDto.getUsername()));
                     }
-                    // 어댑터에 데이터 추가
+
+                    // 어댑터에 데이터 설정 후 변경 알림
                     mRecyclerAdapter.setChatRooms(roomItems);
+                    mRecyclerAdapter.notifyDataSetChanged();  // 어댑터 갱신 알림
                 } else {
                     System.out.println(response.toString());
                 }
@@ -141,9 +143,15 @@ public class StreamingMain extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<RoomDto>> call, Throwable t) {
-
+                System.out.println("Failed to load chat rooms: " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadStreamingData();  // 최신 데이터를 가져와 리사이클러뷰 갱신
     }
 
 

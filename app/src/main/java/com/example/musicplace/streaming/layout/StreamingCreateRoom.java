@@ -17,13 +17,6 @@ import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
 import com.example.musicplace.global.token.TokenManager;
 import com.example.musicplace.streaming.dto.RoomDto;
-import com.example.musicplace.youtubeMusicPlayer.dto.VidioImage;
-import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
-import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
-import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +27,7 @@ public class StreamingCreateRoom extends AppCompatActivity {
     private UserApiInterface api;
     private EditText editTextTitle, editTextText;
     private Button back, add;
-    private String roomId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,46 +47,54 @@ public class StreamingCreateRoom extends AppCompatActivity {
         back = findViewById(R.id.back);
         add = findViewById(R.id.add);
 
-
+        // 채팅방 생성 버튼 이벤트
         add.setOnClickListener(view -> {
             String title = editTextTitle.getText().toString();
             String comment = editTextText.getText().toString();
-            createChatRoom(title, comment);
-            intent = new Intent(StreamingCreateRoom.this, StreamingHostRoom.class);
-            intent.putExtra("roomTitle", title);
-            intent.putExtra("roomId", roomId);
-            intent.putExtra("roomComment", comment);
-            startActivity(intent);
-            finish();
+
+            if (title.isEmpty() || comment.isEmpty()) {
+                Toast.makeText(this, "제목과 설명을 입력하세요.", Toast.LENGTH_SHORT).show();
+            } else {
+                createChatRoom(title, comment);  // 방 생성 메서드 호출
+            }
         });
 
+        // 뒤로가기 버튼 이벤트
         back.setOnClickListener(view -> {
             intent = new Intent(StreamingCreateRoom.this, StreamingMain.class);
             startActivity(intent);
             finish();
         });
-
     }
 
-    private void createChatRoom(String title, String comment){
+    private void createChatRoom(String title, String comment) {
         RoomDto roomDto = new RoomDto(null, title, comment, null);
         Call<String> call = api.createChatRoom(roomDto);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    roomId = response.body().toString();
+                if (response.isSuccessful() && response.body() != null) {
+                    String roomId = response.body(); // 방 ID를 응답으로 받음
+                    System.out.println("Created room ID: " + roomId);
 
+                    // 방 생성이 성공했을 때만 StreamingHostRoom으로 이동
+                    intent = new Intent(StreamingCreateRoom.this, StreamingHostRoom.class);
+                    intent.putExtra("roomTitle", title);
+                    intent.putExtra("roomId", roomId);
+                    intent.putExtra("roomComment", comment);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    System.out.println(response.toString());
+                    Toast.makeText(StreamingCreateRoom.this, "채팅방 생성 실패", Toast.LENGTH_SHORT).show();
+                    System.out.println("Response error: " + response.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Toast.makeText(StreamingCreateRoom.this, "네트워크 오류로 채팅방을 생성할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                System.out.println("Network error: " + t.getMessage());
             }
         });
-
     }
 }
