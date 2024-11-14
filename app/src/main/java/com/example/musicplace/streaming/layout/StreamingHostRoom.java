@@ -3,7 +3,9 @@ package com.example.musicplace.streaming.layout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,16 +67,6 @@ public class StreamingHostRoom extends AppCompatActivity {
             return insets;
         });
 
-        /*// Intent에서 데이터 수신
-        intent = getIntent();
-        if (intent != null) {
-            streamingTitle = intent.getStringExtra("roomTitle");
-            roomId = intent.getStringExtra("roomId");
-            roomComment = intent.getStringExtra("roomComment");
-            vidioId = intent.getStringExtra("vidioId"); // 필요 시 vidioId도 수신
-            Log.d(TAG, "Intent extras received1: roomTitle=" + streamingTitle + ", roomId=" + roomId + ", roomComment=" + roomComment);
-        }*/
-
         TokenManager tokenManager = new TokenManager(this);
         api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
 
@@ -118,9 +110,7 @@ public class StreamingHostRoom extends AppCompatActivity {
         }, token);  // 생성자에 token 전달
         webSocketClient.connect(wsUrl);
 
-        webView = findViewById(R.id.webView);
-        titleTextView = findViewById(R.id.titleTextView);
-        titleTextView.setText(streamingTitle);
+
 
         intent = getIntent();
         if (intent != null) {
@@ -136,16 +126,33 @@ public class StreamingHostRoom extends AppCompatActivity {
             Log.d(TAG, "Intent extras retrieved2 : " + ", VidioId=" + vidioId );
         }
 
+        titleTextView = findViewById(R.id.titleTextView);
+        titleTextView.setText(streamingTitle);
+
         webView = findViewById(R.id.webView);
+
+        // WebView 설정
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient());
+
+        titleTextView = findViewById(R.id.titleTextView);
+        titleTextView.setText(streamingTitle);
+
         if (vidioId != null && !vidioId.isEmpty()) {
-            String videoUrl = "https://www.youtube.com/embed/" + vidioId;
-            webView.getSettings().setJavaScriptEnabled(true);  // 자바스크립트 활성화
-            webView.loadUrl(videoUrl);
+            String videoUrl = "<html><body style='margin:0;padding:0;'><iframe width='100%' height='100%' src='https://www.youtube.com/embed/"
+                    + vidioId + "' frameborder='0' allowfullscreen></iframe></body></html>";
+            webView.loadDataWithBaseURL(null, videoUrl, "text/html", "UTF-8", null);
             Log.d(TAG, "Loading YouTube video URL: " + videoUrl);
             sendYoutubeTalkMessage();
         } else {
             Log.w(TAG, "vidioId is null or empty, cannot load video");
         }
+
+
 
         RecyclerView chatRecyclerView = findViewById(R.id.chatRecyclerView);
         chatingAdapter = new ChatingAdapter(chatList);
@@ -185,11 +192,11 @@ public class StreamingHostRoom extends AppCompatActivity {
         patchButton = findViewById(R.id.patchButton);
         patchButton.setOnClickListener(view -> {
             Log.i(TAG, "Patch button clicked");
-            Intent patchIntent = new Intent(StreamingHostRoom.this, StreamingMain.class);
+            Intent patchIntent = new Intent(StreamingHostRoom.this, StreamingEditRoom.class);
             patchIntent.putExtra("roomId", roomId);
             patchIntent.putExtra("roomTitle", streamingTitle);
             patchIntent.putExtra("roomComment", roomComment);
-            startActivity(patchIntent);
+            startActivityForResult(patchIntent, 2);  // 요청 코드 2 사용
         });
     }
 
@@ -321,6 +328,7 @@ public class StreamingHostRoom extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             // StreamingSearchYoutube에서 VidioId를 받아옴
             String vidioId = data.getStringExtra("VidioId");
@@ -331,8 +339,18 @@ public class StreamingHostRoom extends AppCompatActivity {
                 Log.d(TAG, "Updated WebView with new video URL: " + videoUrl);
                 sendYoutubeTalkMessage();
             }
+        } else if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+            // StreamingEditRoom에서 수정된 roomTitle과 roomComment를 받아옴
+            roomId = data.getStringExtra("roomId");
+            streamingTitle = data.getStringExtra("roomTitle");
+            roomComment = data.getStringExtra("roomComment");
+
+            // UI 업데이트
+            titleTextView.setText(streamingTitle);
+            Log.d(TAG, "Updated room details: Title=" + streamingTitle + ", Comment=" + roomComment);
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

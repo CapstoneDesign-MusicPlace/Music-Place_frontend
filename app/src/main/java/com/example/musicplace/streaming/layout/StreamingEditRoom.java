@@ -66,7 +66,18 @@ public class StreamingEditRoom extends AppCompatActivity {
             String title = editTextTitle.getText().toString();
             String comment = editTextText.getText().toString();
             RoomDto roomDto = new RoomDto(null, title, comment, null);
-            patchChatRoom(streamingId,roomDto);
+
+            // Chat room을 업데이트하는 API 호출
+            patchChatRoom(streamingId, roomDto);
+
+            // 수정된 데이터 Intent에 담기
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("roomId", streamingId);
+            resultIntent.putExtra("roomTitle", title);
+            resultIntent.putExtra("roomComment", comment);
+
+            // 결과 설정 및 Activity 종료
+            setResult(RESULT_OK, resultIntent);
             finish();
         });
     }
