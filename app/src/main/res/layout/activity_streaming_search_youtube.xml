@@ -7,33 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".youtubeMusicPlayer.layout.SearchMusic">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="40dp"
-        android:layout_gravity="left"
-       >
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            app:srcCompat="@drawable/doublehalfnote" />
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="MUSIC"
-            android:textColor="@color/text"
-            android:textSize="25dp" />
-
-    </LinearLayout>
+    tools:context=".streaming.layout.StreamingSearchYoutube">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,17 +54,5 @@
         android:layout_marginBottom="10dp"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/menuBackground"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@color/icon"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/menu" />
-
-
 
 </LinearLayout>

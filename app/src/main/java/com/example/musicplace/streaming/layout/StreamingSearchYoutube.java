@@ -1,4 +1,4 @@
-package com.example.musicplace.youtubeMusicPlayer.layout;
+package com.example.musicplace.streaming.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,19 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplace.R;
-
-import com.example.musicplace.global.token.TokenManager;
-import com.example.musicplace.main.layout.MainDisplay;
-import com.example.musicplace.profile.layout.Profile;
-import com.example.musicplace.streaming.layout.StreamingMain;
-import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
-import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
-import com.example.musicplace.youtubeMusicPlayer.dto.VidioImage;
-import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
-import com.example.musicplace.playlist.layout.MyPlaylist;
 import com.example.musicplace.global.retrofit.RetrofitClient;
 import com.example.musicplace.global.retrofit.UserApiInterface;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.musicplace.global.token.TokenManager;
+import com.example.musicplace.youtubeMusicPlayer.adapter.YoutubeRecyclerAdapter;
+import com.example.musicplace.youtubeMusicPlayer.dto.VidioImage;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeItem;
+import com.example.musicplace.youtubeMusicPlayer.dto.YoutubeVidioDto;
+import com.example.musicplace.youtubeMusicPlayer.layout.MusicPlayer;
+import com.example.musicplace.youtubeMusicPlayer.layout.SearchMusic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,28 +32,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchMusic extends AppCompatActivity {
-
-    private BottomNavigationView bottomNavigationView;
+public class StreamingSearchYoutube extends AppCompatActivity {
     private Intent intent;
     private EditText keywordEditText;
     private Button searchButton;
     private UserApiInterface api;
     private YoutubeRecyclerAdapter mRecyclerAdapter;
     private List<YoutubeVidioDto> videoDtoList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_search_music);
-
+        setContentView(R.layout.activity_streaming_search_youtube);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         // TokenManager 생성
         TokenManager tokenManager = new TokenManager(this);
         api = RetrofitClient.getRetrofit(tokenManager).create(UserApiInterface.class);
@@ -67,8 +58,6 @@ public class SearchMusic extends AppCompatActivity {
         mRecyclerAdapter = new YoutubeRecyclerAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        loadYoutubeData();
-
 
 
         // 음악 검색 버튼
@@ -80,10 +69,10 @@ public class SearchMusic extends AppCompatActivity {
             youtubeSearch(keywordText);
         });
 
-        // RecyclerView 아이템 클릭 리스너
+        // StreamingSearchYoutube의 RecyclerView 아이템 클릭 리스너에서 수정
         mRecyclerAdapter.setOnItemClickListener((position) -> {
             // 클릭된 아이템의 YoutubeItem 데이터 가져오기
-            Intent intent = new Intent(getApplicationContext(), MusicPlayer.class);
+            Intent intent = new Intent(getApplicationContext(), StreamingMusicPlayer.class);
             intent.putExtra("VidioTitle", videoDtoList.get(position).getVidioTitle());
             intent.putExtra("VidioId", videoDtoList.get(position).getVidioId());
 
@@ -94,69 +83,29 @@ public class SearchMusic extends AppCompatActivity {
                 intent.putExtra("VidioImage", videoDtoList.get(position).getVidioImage());
             }
 
-            startActivity(intent);
+            startActivityForResult(intent, 1);  // StreamingMusicPlayer를 호출
         });
 
-
-
-        // 하단 네비게이션바
-        bottomNavigationView = findViewById(R.id.bottom_menu);
-        bottomNavigationView.setSelectedItemId(R.id.search);
-        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-
-            if(menuItem.getItemId() == R.id.home) {
-                intent = new Intent(SearchMusic.this, MainDisplay.class);
-                startActivity(intent);
-                finish();
-                return true;
-            } else if(menuItem.getItemId() == R.id.headset) {
-                intent = new Intent(SearchMusic.this, StreamingMain.class);
-                startActivity(intent);
-                finish();
-                return true;
-            } else if(menuItem.getItemId() == R.id.profile) {
-                intent = new Intent(SearchMusic.this, Profile.class);
-                startActivity(intent);
-                finish();
-                return true;
-            } else if(menuItem.getItemId() == R.id.add) {
-                intent = new Intent(SearchMusic.this, MyPlaylist.class);
-                startActivity(intent);
-                finish();
-                return true;
-            }
-
-            return false;
-        });
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            // StreamingMusicPlayer로부터 VidioId 수신
+            String vidioId = data.getStringExtra("VidioId");
 
+            // VidioId를 결과로 설정하여 StreamingHostRoom으로 전달
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("VidioId", vidioId);
+            setResult(RESULT_OK, resultIntent);
 
-    private void loadYoutubeData() {
-        api.youtubeGetPlaylist().enqueue(new Callback<List<YoutubeVidioDto>>() {
-            @Override
-            public void onResponse(Call<List<YoutubeVidioDto>> call, Response<List<YoutubeVidioDto>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
-                    videoDtoList = response.body();
-
-                    for (YoutubeVidioDto videoDto : videoDtoList) {
-                       youtubeItems.add(new YoutubeItem(videoDto.getVidioImage(), videoDto.getVidioTitle()));
-                    }
-                    // 어댑터에 데이터 추가
-                    mRecyclerAdapter.setYoutubeItems(youtubeItems);
-                } else {
-                    System.out.println(response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<YoutubeVidioDto>> call, Throwable t) {
-
-            }
-        });
+            // StreamingSearchYoutube 종료
+            finish();
+        }
     }
+
 
     private void youtubeSearch(String keywordText){
         Call<List<YoutubeVidioDto>> call = api.youtubeSearch(keywordText);
@@ -180,9 +129,8 @@ public class SearchMusic extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<YoutubeVidioDto>> call, Throwable t) {
-                Toast.makeText(SearchMusic.this, "API Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(StreamingSearchYoutube.this, "API Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 }
