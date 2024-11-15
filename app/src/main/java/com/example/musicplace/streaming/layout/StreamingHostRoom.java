@@ -232,9 +232,7 @@ public class StreamingHostRoom extends AppCompatActivity {
             if (message != null) {
                 payload.put("message", requestChatDto.getMessage());
             }
-            if (vidioId != null) {
-                payload.put("vidioId", requestChatDto.getVidioId());
-            }
+
             json.put("payload", payload);
 
             Log.d(TAG, "Sending WebSocket message: " + json.toString());

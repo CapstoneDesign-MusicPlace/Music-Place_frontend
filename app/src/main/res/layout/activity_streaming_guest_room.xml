@@ -27,7 +27,7 @@
             app:srcCompat="@drawable/back" />
 
         <TextView
-            android:id="@+id/userNicknameTextView"
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -44,7 +44,7 @@
         android:layout_marginTop="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/musicRecyclerView"
+        android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="295dp"
         android:layout_gravity="center"
@@ -65,7 +65,7 @@
         >
 
         <EditText
-            android:id="@+id/commentEditText"
+            android:id="@+id/messageEditText"
             android:layout_width="270dp"
             android:layout_height="match_parent"
             android:background="@color/recycleViewBackground"
@@ -75,7 +75,7 @@
             android:textSize="15dp" />
 
         <Button
-            android:id="@+id/saveButton"
+            android:id="@+id/sendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
