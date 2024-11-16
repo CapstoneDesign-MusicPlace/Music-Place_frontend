@@ -58,26 +58,7 @@ public class Login extends AppCompatActivity {
         });
 
 
-        forgetId = (Button) findViewById(R.id.forgetId);
-        forgetId.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {// 아이디 찾기 이동
-                Intent intent = new Intent(Login.this, FindId.class);
-                startActivity(intent);
-            }
-        });
-
-
-        forgetPw = (Button) findViewById(R.id.forgetPw);
-        forgetPw.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {// 비밀번호 찾기 이동
-                Intent intent = new Intent(Login.this, FindPw.class);
-                startActivity(intent);
-            }
-        });
 
 
         start = (ImageButton) findViewById(R.id.finish);
