@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
-    private static final String baseUrl = "http://10.0.2.2:8080/";
+    private static final String baseUrl = "http://34.134.207.38:8080/";
     private static Retrofit retrofit;
 
     public static Retrofit getRetrofit(TokenManager tokenManager) {
