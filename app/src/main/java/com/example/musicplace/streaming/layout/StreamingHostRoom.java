@@ -52,7 +52,7 @@ public class StreamingHostRoom extends AppCompatActivity {
     private ChatingAdapter chatingAdapter;
     private ArrayList<ResponseChatDto> chatList = new ArrayList<>();
     private EditText messageEditText;
-    private String wsUrl = "ws://10.0.2.2:8080/chats"; // WebSocket URL
+    private String wsUrl = "ws://34.134.207.38:8080/chats"; // WebSocket URL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
